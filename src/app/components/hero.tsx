@@ -1,22 +1,23 @@
 "use client";
 
 import Image from "next/image";
-import styles from "./hero.module.css";
+import styles from "../styles/hero.module.css";
+import image from "next/image";
 
 export default function Hero() {
   return (
     <section className={styles.hero}>
       <div className={styles.container}>
 
-        {/* LEFT */}
+     
         <div>
-          {/* Header Image */}
+        
           <Image
-            src="/image/hero2.jpg" // 👈 ảnh header
+            src="/image/hero2.jpg" 
             alt="header"
             width={180}
             height={50}
-            className={styles.headerImage}
+            className={styles["header-image"]} 
           />
 
           
@@ -32,11 +33,11 @@ sẵn sàng hỗ trợ khách hàng. Hãy đến wannapet
           </p>
         </div>
 
-        {/* RIGHT */}
-        <div className={styles.imageWrapper}>
-          <div className={styles.bgShape}></div>
+       
+        <div className={styles["image-wrapper"]}>
+          <div className={styles["bg-shape"]}></div>
 
-          <div className={styles.borderShape}>
+          <div className={styles["border-shape"]}>
             <Image
               src="/image/hero1.jpg"
               alt="pet"
@@ -45,8 +46,8 @@ sẵn sàng hỗ trợ khách hàng. Hãy đến wannapet
             />
           </div>
 
-          {/* BUTTON dưới image */}
-          <button className={styles.buttonRight}>
+         
+          <button className={styles["button-right"]}>
             Tìm hiểu thêm về <b>wannapet</b>
           </button>
         </div>

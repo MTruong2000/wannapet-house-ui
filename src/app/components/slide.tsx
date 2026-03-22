@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import styles from "./slider.module.css";
+import styles from "../styles/slider.module.css";
 
 const slides = [
   { id: 1, image: "/image/slide1.jpg", link: "/" },
@@ -35,7 +35,6 @@ export default function Slider() {
   onMouseEnter={stopAuto}
   onMouseLeave={startAuto}
 >
-  {/* Track */}
   <div
     className={styles.track}
     style={{ transform: `translateX(-${current * 100}%)` }}
@@ -59,7 +58,7 @@ export default function Slider() {
         key={index}
         onClick={() => setCurrent(index)}
         className={`${styles.dot} ${
-          index === current ? styles.dotActive : ""
+          index === current ? styles["dot-active"] : ""
         }`}
       />
     ))}

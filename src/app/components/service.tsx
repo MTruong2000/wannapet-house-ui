@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import styles from "./service.module.css";
+import styles from "../styles/service.module.css";
 
 const services = [
   {
@@ -43,10 +43,35 @@ export default function Services() {
 
   return (
     <section className={styles.section}>
-      
-      {/* Title */}
+    
       <div className={styles.header}>
-        <h2>Dịch Vụ Nổi Bật</h2>
+        <div className={styles["ellipse-wrapper"]}>
+  <svg viewBox="0 0 300 150" className={styles["ellipse-svg"]}>
+    
+    <ellipse
+      cx="150"
+      cy="75"
+      rx="120"
+      ry="50"
+       transform="rotate(10 150 75)"
+      className={styles["ellipse-line"]
+        
+      }
+    />
+
+    <ellipse
+      cx="150"
+      cy="75"
+      rx="120"
+      ry="50"
+      className={styles["ellipse-line"]}
+      transform="rotate(-10 150 75)"
+    />
+
+  </svg>
+
+  <span className={styles["ellipse-text"]}>Dịch Vụ Nổi Bật</span>
+</div>
       </div>
 
       {/* Grid */}
@@ -59,7 +84,7 @@ export default function Services() {
             }`}
           >
             
-            <div className={styles.imageWrap}>
+            <div className={styles["image-wrap"]}>
               <Image
                 src={item.image}
                 alt={item.title}

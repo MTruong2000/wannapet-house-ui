@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import styles from "./productshowcase.module.css";
+import styles from "../styles/productshowcase.module.css";
 
 type ProductCardProps = {
   src: string;
@@ -10,6 +10,8 @@ type ProductCardProps = {
 type ProductBlockProps = {
   title: string;
   mainImage: string;
+  header_image_left: string[];
+  header_image_right: string[];
   products: string[];
   reverse?: boolean;
 };
@@ -20,6 +22,12 @@ const sections = [
     title: "Mua Đồ Cho Chó",
     mainImage: "/image/main_dog_image.jpg",
     reverse: false,
+    header_image_left:[
+      "/image/header_image1.jpg",
+    ],
+    header_image_right:[      
+      "/image/dog_header_image.jpg",
+    ],
     products: [
       "/image/product1.jpg",
       "/image/product2.jpg",
@@ -31,10 +39,33 @@ const sections = [
     title: "Mua Đồ Cho Mèo",
     mainImage: "/image/main_cat_image.jpg",
     reverse: true,
+     header_image_left:[
+      "/image/header_image1.jpg",
+    ],
+    header_image_right:[
+      "/image/cat_header_image.jpg",
+    ],
     products: [
       "/image/product_cat1.jpg",
       "/image/product_cat2.jpg",
       "/image/product_cat3.jpg",
+    ],
+  },
+   {
+    id: 3,
+    title: "Phụ Kiện Chó & Mèo",
+    mainImage: "/image/phukien.jpg",
+    reverse: false,
+     header_image_left:[
+      "/image/cat_header_image.jpg",
+    ],
+    header_image_right:[
+      "/image/dog_header_image.jpg",
+    ],
+    products: [
+      "/image/phukien1.jpg",
+      "/image/phukien2.jpg",
+      "/image/phukien3.jpg",
     ],
   },
 ];
@@ -42,7 +73,7 @@ const sections = [
 function ProductCard({ src }: ProductCardProps) {
   return (
     <div className={styles.card}>
-      <div className={styles.imageWrap}>
+      <div className={styles["image-wrap"]}>
         <Image src={src} alt="" fill className={styles.image} />
       </div>
 
@@ -56,6 +87,8 @@ function ProductCard({ src }: ProductCardProps) {
 function ProductBlock({
   title,
   mainImage,
+  header_image_left, 
+  header_image_right,
   products,
   reverse,
 }: ProductBlockProps) {
@@ -64,17 +97,26 @@ function ProductBlock({
 
       {/* IMAGE */}
       <div className={styles.left}>
-        <div className={styles.leftBorder}></div>
+        <div className={styles["left-border"]}></div>
 
-        <div className={styles.leftImage}>
+        <div className={styles["left-image"]}>
           <Image src={mainImage} alt="" fill className={styles.image} />
         </div>
       </div>
 
       {/* CONTENT */}
       <div className={styles.right}>
-        <h2 className={styles.title}>{title}</h2>
+          <div className={styles["header-row"]}>
+  <div className={styles["header-left-wrapper"]}>
+    <Image src={header_image_left[0]} alt="" fill />
+  </div>
 
+  <h2 className={styles.title}>{title}</h2>
+
+  <div className={styles["header-right-wrapper"]}>
+    <Image src={header_image_right[0]} alt="" fill />
+  </div>
+</div>
         <div className={styles.products}>
           {products.map((item, index) => (
             <ProductCard key={index} src={item} />

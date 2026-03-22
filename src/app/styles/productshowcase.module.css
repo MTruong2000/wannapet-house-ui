@@ -6,7 +6,7 @@
   gap: 60px;
 }
 
-/* BLOCK */
+
 .block {
   display: grid;
   grid-template-columns: 1fr;
@@ -14,13 +14,11 @@
   align-items: center;
 }
 
-/* DESKTOP */
+
 @media (min-width: 768px) {
   .block {
     grid-template-columns: 300px 1fr;
   }
-
-  /* đảo layout */
   .reverse {
     direction: rtl;
   }
@@ -30,14 +28,14 @@
   }
 }
 
-/* LEFT */
+
 .left {
   position: relative;
   display: flex;
   justify-content: center;
 }
 
-.leftBorder {
+.left-border {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -49,16 +47,16 @@
   left: 20px;
 }
 
-.leftImage {
+.left-image {
   position: relative;
   width: 100%;
-  max-width: 300px;          /* đúng size bạn */
-  aspect-ratio: 286 / 367;   /* 🔥 chuẩn tỷ lệ */
+  max-width: 300px;       
+  aspect-ratio: 286 / 367;  
   border-radius: 16px;
   overflow: hidden;
   background: #fff;
 }
-/* RIGHT */
+
 .right {
   text-align: center;
 }
@@ -69,14 +67,9 @@
   }
 }
 
-.title {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-align: center;
-}
 
-/* PRODUCTS */
+
+
 .products {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 284px));
@@ -84,7 +77,7 @@
   gap: 20px;
 }
 
-/* CARD */
+
 .card {
   background: #fff;
   padding: 10px;
@@ -98,12 +91,12 @@
   transform: translateY(-5px);
 }
 
-/* IMAGE */
-.imageWrap {
+
+.image-wrap {
   position: relative;
   width: 100%;
-  max-width: 260px;     /* 🔥 tăng size */
-  aspect-ratio: 220/ 284;  /* 🔥 giữ vuông đẹp */
+  max-width: 260px;  
+  aspect-ratio: 220/ 284; 
   margin: 0 auto;
   border-radius: 10px;
   overflow: hidden;
@@ -113,7 +106,6 @@
   object-fit: contain;
 }
 
-/* BUTTON */
 .btn {
   margin-top: 10px;
   width: 100%;
@@ -128,4 +120,26 @@
 
 .btn:hover {
   opacity: 0.85;
+}
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.header-left-wrapper,
+.header-right-wrapper {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
 }
