@@ -1,21 +1,32 @@
-/* SECTION */
 .section {
   background: #9aa77a;
   padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
 }
 
-/* CONTAINER */
-.container {
+/* BLOCK */
+.block {
   display: grid;
   grid-template-columns: 1fr;
   gap: 30px;
   align-items: center;
 }
 
-/* Desktop */
+/* DESKTOP */
 @media (min-width: 768px) {
-  .container {
+  .block {
     grid-template-columns: 300px 1fr;
+  }
+
+  /* đảo layout */
+  .reverse {
+    direction: rtl;
+  }
+
+  .reverse .right {
+    direction: ltr;
   }
 }
 
@@ -28,9 +39,11 @@
 
 .leftBorder {
   position: absolute;
-  width: 220px;
-  height: 280px;
-  border: 3px solid #c8e36a;
+  width: 100%;
+  height: 100%;
+  max-width: 286px;
+  aspect-ratio: 286 / 367;
+  border: 2px solid #c8e36a;
   border-radius: 16px;
   top: 20px;
   left: 20px;
@@ -38,91 +51,81 @@
 
 .leftImage {
   position: relative;
-  width: 220px;
-  height: 350px;
+  width: 100%;
+  max-width: 300px;          /* đúng size bạn */
+  aspect-ratio: 286 / 367;   /* 🔥 chuẩn tỷ lệ */
   border-radius: 16px;
   overflow: hidden;
   background: #fff;
 }
-
 /* RIGHT */
 .right {
   text-align: center;
 }
 
-.title {
-  font-size: 32px;
-  font-weight: bold;
-  color: #2f3b1f;
-  margin-bottom: 20px;
-}
-
-/* PRODUCTS GRID */
-.products {
-  display: grid;
-  grid-template-columns: repeat(3, max-content); /* 👈 QUAN TRỌNG */
-  gap: 20px;
-  justify-content: center; /* 👈 căn giữa toàn bộ */
-}
-
-/* Desktop: 3 cột */
 @media (min-width: 768px) {
-  .products {
-    grid-template-columns: repeat(3, 1fr);
+  .right {
+    text-align: left;
   }
 }
 
-/* CARD (ảnh + button) */
-.card {
-  display: flex;
-  flex-direction: column;   /* 👈 quan trọng */
-  align-items: center;
-  gap: 12px;
-  width: 260px;
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
+/* PRODUCTS */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 284px));
+  justify-content: center;
+  gap: 20px;
+}
 
-
-/* BUTTON */
-.btn {
-  width: 100%;
-  height: 40px;
-  background: #4a4a2a;
-  border-radius: 999px;
-  border: none;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
+/* CARD */
+.card {
+  background: #fff;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
   transition: 0.3s;
-}
-
-.btn:hover {
-  background: #2f3b1f;
-}
-
-/* HOVER EFFECT */
-.card {
-  transition: transform 0.3s;
 }
 
 .card:hover {
   transform: translateY(-5px);
 }
 
-.card:hover .image {
-  transform: scale(1.05);
-  transition: transform 0.4s;
-}
+/* IMAGE */
 .imageWrap {
   position: relative;
   width: 100%;
-  aspect-ratio: 217 / 285; /* 👈 QUAN TRỌNG */
-  border-radius: 16px;
+  max-width: 260px;     /* 🔥 tăng size */
+  aspect-ratio: 220/ 284;  /* 🔥 giữ vuông đẹp */
+  margin: 0 auto;
+  border-radius: 10px;
   overflow: hidden;
-  background: #fff;
 }
 
 .image {
   object-fit: contain;
-  padding: 10px;
+}
+
+/* BUTTON */
+.btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px;
+  background: #4b4f1f;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  opacity: 0.85;
 }
