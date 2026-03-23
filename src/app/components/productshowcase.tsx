@@ -23,10 +23,10 @@ const sections = [
     mainImage: "/image/main_dog_image.jpg",
     reverse: false,
     header_image_left:[
-      "/image/header_image1.jpg",
+      "/image/header_image1.png",
     ],
     header_image_right:[      
-      "/image/dog_header_image.jpg",
+      "/image/dog_header_image.png",
     ],
     products: [
       "/image/product1.jpg",
@@ -40,10 +40,10 @@ const sections = [
     mainImage: "/image/main_cat_image.jpg",
     reverse: true,
      header_image_left:[
-      "/image/header_image1.jpg",
+      "/image/header_image1.png",
     ],
     header_image_right:[
-      "/image/cat_header_image.jpg",
+      "/image/cat_header_image.png",
     ],
     products: [
       "/image/product_cat1.jpg",
@@ -57,10 +57,10 @@ const sections = [
     mainImage: "/image/phukien.jpg",
     reverse: false,
      header_image_left:[
-      "/image/cat_header_image.jpg",
+      "/image/cat_header_image.png",
     ],
     header_image_right:[
-      "/image/dog_header_image.jpg",
+      "/image/dog_header_image.png",
     ],
     products: [
       "/image/phukien1.jpg",

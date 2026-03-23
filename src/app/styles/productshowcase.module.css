@@ -12,6 +12,7 @@
   grid-template-columns: 1fr;
   gap: 30px;
   align-items: center;
+  margin: 0 50px;
 }
 
 
@@ -44,7 +45,7 @@
   border: 2px solid #c8e36a;
   border-radius: 16px;
   top: 20px;
-  left: 20px;
+  left: -20px;
 }
 
 .left-image {
@@ -142,4 +143,10 @@
   font-size: 28px;
   font-weight: 700;
   text-align: center;
+}
+.header-left-image,
+.header-right-image {
+  width: auto;
+  height: 100%;
+  object-fit: cover;
 }
