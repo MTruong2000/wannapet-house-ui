@@ -1,4 +1,4 @@
-import ProductBlock from "../components/list_product";
+import ProductBlock from "../components/list-product";
 const dogProducts = [
   {
     image: "/image/dog_product2.jpg",

@@ -1,57 +1,41 @@
 "use client";
 
 import Image from "next/image";
-import styles from "../styles/hero.module.css";
-import image from "next/image";
 
 export default function Hero() {
   return (
-    <section className={styles.hero}>
-      <div className={styles.container}>
-
-     
-        <div>
-        
+    <section className="w-full bg-[#d9d4c2] py-[80px] px-[20px]">
+      <div className="flex flex-col md:flex-row justify-center items-center relative gap-[40px]">     
+        <div className="w-full md:w-1/2">        
           <Image
-            src="/image/hero2.jpg" 
+            src="/image/hero2.png" 
             alt="header"
-            width={180}
-            height={50}
-            className={styles["header-image"]} 
-          />
-
-          
-
-          <p className={styles.desc}>
+            width={360}
+            height={100}
+            className=""
+          />        
+          <p className=" font-[ir] text-xl" >
             wanwannapet với hơn 10 năm kinh nghiệm,
-cung cấp đầy đủ các sản phẩm và dịch vụ
-chăm sóc thú cưng chất lượng cao. Chúng tôi có
-đa dạng các loài vật cưng, phụ kiện và thức ăn,
-cùng với đội ngũ nhân viên chuyên nghiệp luôn
-sẵn sàng hỗ trợ khách hàng. Hãy đến wannapet
-để khám phá thế giới của những người bạn đáng yêu!
+            cung cấp đầy đủ các sản phẩm và dịch vụ
+            chăm sóc thú cưng chất lượng cao. Chúng tôi có
+            đa dạng các loài vật cưng, phụ kiện và thức ăn,
+            cùng với đội ngũ nhân viên chuyên nghiệp luôn
+            sẵn sàng hỗ trợ khách hàng. Hãy đến wannapet
+            để khám phá thế giới của những người bạn đáng yêu!
           </p>
-        </div>
-
-       
-        <div className={styles["image-wrapper"]}>
-          <div className={styles["bg-shape"]}></div>
-
-          <div className={styles["border-shape"]}>
-            <Image
-              src="/image/hero1.jpg"
-              alt="pet"
-              width={350}
-              height={350}
-            />
-          </div>
-
+        </div>       
+        <div className="flex flex-col gap-[20px]">
          
-          <button className={styles["button-right"]}>
+            <Image
+              src="/image/hero.png"
+              alt="pet"
+              width={500}
+              height={500}
+            />        
+          <button className="bg-[#9aa77a] text-white py-2 px-4 rounded-[25px] hover:bg-[#fff] hover:text-[#5D2906] max-w-[300px] mx-auto cursor-pointer">
             Tìm hiểu thêm về <b>wannapet</b>
           </button>
         </div>
-
       </div>
     </section>
   );

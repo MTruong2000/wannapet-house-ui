@@ -1,8 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import styles from "../styles/productshowcase.module.css";
-
+import styles from "../styles/main.module.css";
 type ProductCardProps = {
   src: string;
 };
@@ -72,14 +71,10 @@ const sections = [
 
 function ProductCard({ src }: ProductCardProps) {
   return (
-    <div className={styles.card}>
-      <div className={styles["image-wrap"]}>
-        <Image src={src} alt="" fill className={styles.image} />
+    <div className="bg-[#9aa77a] flex flex-col py-4 px-2">
+      <div className="relative max-w-[260px] w-full aspect-[220/284] mx-auto rounded-[10px] overflow-hidden">
+        <Image src={src} alt="" fill className="object-cover" />
       </div>
-
-      <button className={styles.btn}>
-        Xem thêm
-      </button>
     </div>
   );
 }
@@ -93,46 +88,54 @@ function ProductBlock({
   reverse,
 }: ProductBlockProps) {
   return (
-    <div className={`${styles.block} ${reverse ? styles.reverse : ""}`}>
+    <div
+  className={`grid grid-cols-1 md:grid-cols-[300px_1fr] gap-[30px] items-center ${
+    reverse ? styles.reverse : ""} : ""
+  }`}
+>
+      <div className="relative flex ">
+        <div className="absolute w-full max-w-[286px] aspect-[286/367] border-2 border-[#c8e36a] rounded-[16px] top-[30px] left-[-20px]"></div>
 
-      {/* IMAGE */}
-      <div className={styles.left}>
-        <div className={styles["left-border"]}></div>
-
-        <div className={styles["left-image"]}>
-          <Image src={mainImage} alt="" fill className={styles.image} />
+        <div className="relative w-full max-w-[300px] aspect-[286/367] rounded-[16px] overflow-hidden bg-white">
+          <Image src={mainImage} alt="" fill className="object-cover" />
         </div>
       </div>
-
-      {/* CONTENT */}
-      <div className={styles.right}>
-          <div className={styles["header-row"]}>
-  <div className={styles["header-left-wrapper"]}>
-    <Image src={header_image_left[0]} alt="" fill />
+      <div className="">
+          <div className="flex items-center justify-center mb-[20px] gap-[20px] relative">
+  <div className="relative w-[70px] h-[70px]">
+    <Image src={header_image_left[0]} alt="" fill className="aspect-[1/1]" />
   </div>
 
-  <h2 className={styles.title}>{title}</h2>
+  <h2 className="text-xl font-bold text-[#41431B]">{title}</h2>
 
-  <div className={styles["header-right-wrapper"]}>
-    <Image src={header_image_right[0]} alt="" fill />
+  <div className="relative w-[70px] h-[70px]">
+    <Image src={header_image_right[0]} alt="" fill className="aspect-[1/1]" />
   </div>
 </div>
-        <div className={styles.products}>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,284px))] justify-center gap-[20px]">
           {products.map((item, index) => (
             <ProductCard key={index} src={item} />
           ))}
         </div>
+        <div className="flex justify-center">
+          <button className="min-w-[200px] bg-[#d9d4c2] text-[#41431B] py-2 px-4 rounded-[25px] mt-[20px] hover:bg-[#4b4f1f] hover:text-white cursor-pointer">
+        Xem thêm
+      </button>
+        </div>
       </div>
-
+          
     </div>
   );
 }
 
 export default function ProductShowcase() {
   return (
-    <section className={styles.section}>
+    <section className="flex flex-col bg-[#9aa77a] px-[20px] py-[20px] gap-[60px]">
       {sections.map((section) => (
+        <div className="">
         <ProductBlock key={section.id} {...section} />
+
+      </div>
       ))}
     </section>
   );

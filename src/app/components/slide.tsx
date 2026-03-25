@@ -31,34 +31,33 @@ export default function Slider() {
 
   return (
     <div
-  className={styles.slider}
+  className="relative w-full aspect-[1920/696] overflow-hidden"
   onMouseEnter={stopAuto}
   onMouseLeave={startAuto}
 >
   <div
-    className={styles.track}
+    className="flex h-full transition-transform duration-700 will-change-transform"
     style={{ transform: `translateX(-${current * 100}%)` }}
   >
     {slides.map((slide) => (
-      <a key={slide.id} href={slide.link} className={styles.slide}>
+      <a key={slide.id} href={slide.link} className="min-w-full h-full relative">
         <Image
           src={slide.image}
           alt=""
           fill
-          className={styles.image}
+          className="w-full h-full object-cover"
         />
       </a>
     ))}
   </div>
 
-  {/* Dots */}
-  <div className={styles.dots}>
+  <div className="absolute bottom-[16px] left-[50%] flex gap-2 z-10">
     {slides.map((_, index) => (
       <button
         key={index}
         onClick={() => setCurrent(index)}
-        className={`${styles.dot} ${
-          index === current ? styles["dot-active"] : ""
+        className={`w-3 h-3 rounded-full border border-black ${
+          index === current ? "bg-black" : "bg-transparent"
         }`}
       />
     ))}

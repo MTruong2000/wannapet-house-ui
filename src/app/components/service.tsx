@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import styles from "../styles/service.module.css";
 
 const services = [
   {
@@ -42,58 +41,38 @@ export default function Services() {
   }, []);
 
   return (
-    <section className={styles.section}>
+    <section className="w-full bg-[#9aa77a] px-[20px] py-[20px] text-center">
     
-      <div className={styles.header}>
-        <div className={styles["ellipse-wrapper"]}>
-  <svg viewBox="0 0 300 150" className={styles["ellipse-svg"]}>
-    
-    <ellipse
-      cx="150"
-      cy="75"
-      rx="120"
-      ry="50"
-       transform="rotate(10 150 75)"
-      className={styles["ellipse-line"]
-        
-      }
-    />
+      <div className="flex justify-center items-center py-12">
+        <div className="relative flex justify-center items-center w-full">
+          <Image src="/image/elipse.png" alt="Services" width={500} height={100} className="aspect-[1080/383] brightness-0 invert" />
 
-    <ellipse
-      cx="150"
-      cy="75"
-      rx="120"
-      ry="50"
-      className={styles["ellipse-line"]}
-      transform="rotate(-10 150 75)"
-    />
-
-  </svg>
-
-  <span className={styles["ellipse-text"]}>Dịch Vụ Nổi Bật</span>
+  <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-extrabold text-[#454543] text-[clamp(24px,2vw,60px)]">
+    Dịch Vụ Nổi Bật
+  </span>
 </div>
       </div>
 
       {/* Grid */}
-      <div ref={ref} className={styles.grid}>
+      <div ref={ref} className="relative mt-[40px] grid grid-cols-1 md:grid-cols-3 gap-[20px]">
         {services.map((item) => (
           <div
             key={item.id}
-            className={`${styles.card} ${
-              visible ? styles.show : ""
+            className={` ${
+              visible ||""
             }`}
           >
             
-            <div className={styles["image-wrap"]}>
+            <div className="relative w-full h-[250px] md:h-[350px] lg:h-[400px] max-w-[400px] mx-auto">
               <Image
                 src={item.image}
                 alt={item.title}
                 fill
-                className={styles.image}
+                className="absolute top-0 left-0 w-[200px] h-[200px] object-cover"
               />
             </div>
 
-            <button className={styles.button}>
+            <button className="bg-[#d9d4c2] text-[#41431B] py-2 px-4 rounded-[25px] mt-[20px] hover:bg-[#41431B] hover:text-white cursor-pointer">
               {item.title}
             </button>
 
