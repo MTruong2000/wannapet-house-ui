@@ -10,6 +10,10 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-wannapet-dark: #41431B;
+  --color-wannapet-primary: #9CA960;
+  --color-wannapet-light: #E3DBBB;
+  --color-wannapet-cream: #F8F3E1;
 }
 
 @media (prefers-color-scheme: dark) {
