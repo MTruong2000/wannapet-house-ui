@@ -1,0 +1,31 @@
+@media (min-width: 768px) {
+  .block {
+    grid-template-columns: 300px 1fr;
+  }
+  .reverse {
+    direction: rtl;
+  }
+
+  .reverse .right {
+    direction: ltr;
+  }
+}
+
+@keyframes fade-scale-in {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fade-scale-item {
+  opacity: 0;
+}
+
+.fade-scale-item.active {
+  animation: fade-scale-in 0.6s ease forwards;
+}
