@@ -1,5 +1,8 @@
 import { title } from "process";
 import Services from "../components/main-service";
+import Header from "../components/header";
+import Footer from "../components/footer";
+import Contact from "../components/contact";
 const service=[{
     title:"Pet Grooming",
     mainImage:"/image/service1.jpg",
@@ -15,9 +18,12 @@ const service=[{
 export default function Service(){
     return(
         <main>
+        <Header />
         <h2 className="text-3xl mb-[0px] font-bold mb-8 w-full bg-[#9aa77a] px-[20px] py-[20px] text-center [-webkit-text-stroke:0.5px_#f5f5f5]">DỊCH VỤ</h2>
         <Services service={service[0]} />
         <Services service={service[1]} />
+        <Contact backgroundColor="bg-wannapet-dark" />
+        <Footer/>
         </main>
 
     )

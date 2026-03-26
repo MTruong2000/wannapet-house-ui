@@ -1,4 +1,7 @@
 import ProductBlock from "../components/list-product";
+import Header from "../components/header";
+import Footer from "../components/footer";
+import Contact from "../components/contact";
 const accessories = [
   {
     image: "/image/accessories1.jpg",
@@ -35,7 +38,10 @@ const accessories = [
 export default function CatProduct(){
     return(
          <main>
+      <Header />
       <ProductBlock title="phụ kiện" products={accessories} />
+      <Contact backgroundColor="bg-wannapet-primary" />
+      <Footer/>
     </main> 
     )
 }

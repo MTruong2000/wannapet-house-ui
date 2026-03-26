@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import styles from "../styles/main.css";
+import { useEffect, useRef, useState } from "react";
 
 type ImageItem = {
   src: string;
@@ -45,10 +46,27 @@ const feedbacks: FeedbackItem[] = [
 ];
 
 export default function FeedbackSection() {
-  return (
-    <section className="w-full bg-[#d9d4c2] py-[80px] px-[20px]  text-center">
+  const ref = useRef<HTMLDivElement | null>(null);
+const [visible, setVisible] = useState(false);
 
-      <div className="relative mb-20">
+useEffect(() => {
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        setVisible(true);
+      }
+    },
+    { threshold: 0.2 } // 👉 hiện khi thấy 20%
+  );
+
+  if (ref.current) observer.observe(ref.current);
+
+  return () => observer.disconnect();
+}, []);
+  return (
+    <section className="w-full bg-wannapet-cream py-[80px] px-[20px]  text-center">
+
+      <div className={`relative mb-20 ${visible ? "fade-left" : "opacity-0 translate-x-[-50px]"}`} ref={ref}>
         <div className="relative flex justify-center items-center w-full">
                   <Image src="/image/elipse.png" alt="Services" width={500} height={100} className="aspect-[1080/383] " />
         
@@ -57,7 +75,7 @@ export default function FeedbackSection() {
           </span>
         </div>
       </div> 
-      <div className="flex justify-center gap-[40px] mb-[50px]">
+      <div className={`flex justify-center gap-[40px] mb-[50px] ${visible ? "fade-right" : "opacity-0 translate-x-[50px]"}`} ref={ref}>
         {images.map((item, index) => (
           <div
             key={index}
@@ -76,7 +94,7 @@ export default function FeedbackSection() {
           </div>
         ))}
       </div>
-      <div className="flex flex-col md:flex-row md:items-start items-center justify-center gap-[40px]">
+      <div className={`flex flex-col md:flex-row md:items-start items-center justify-center gap-[40px] ${visible ? "fade-scale-left" : "opacity-0 translate-x-[-50px]"}`} ref={ref}>
         {feedbacks.map((item, index) => (
           <div key={index} className=" border-[#5c5a3a] border-2 p-6 rounded-[10px] w-[250px] h-[200px] text-[#5c5a3a] ">
             <p>{item.text}</p>

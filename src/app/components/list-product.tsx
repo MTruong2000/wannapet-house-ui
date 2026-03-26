@@ -15,14 +15,14 @@ type ProductBlockProps = {
 
 export default function ProductBlock({ title, products }: ProductBlockProps) {
   return (
-    <section className="w-full bg-[#9aa77a] py-[50px] px-[20px]  text-center">
+    <section className="w-full bg-wannapet-primary py-[50px] px-[20px]  text-center">
       <h2 className="uppercase text-3xl font-bold text-[#41431B] mb-8">
         {title}
       </h2>
 
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-[1400px] mx-auto">
         {products.map((item, index) => (
-          <div key={index} className="bg-white rounded-[16px] overflow-hidden shadow-md">
+          <div key={index} className="fade-scale-item active bg-white rounded-[16px] overflow-hidden shadow-md">
             <div className="relative w-full aspect-[280/340]">
               <Image src={item.image}
                alt={item.name} 

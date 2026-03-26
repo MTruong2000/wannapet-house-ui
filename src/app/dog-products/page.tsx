@@ -1,4 +1,7 @@
 import ProductBlock from "../components/list-product";
+import Header from "../components/header";
+import Footer from "../components/footer";
+import Contact from "../components/contact";
 const dogProducts = [
   {
     image: "/image/dog_product2.jpg",
@@ -25,6 +28,7 @@ const dogProducts = [
 export default function DogProduct(){
     return(
          <main>
+      <Header />
       <ProductBlock title="THỨC ĂN HẠT CHO CHÓ" products={dogProducts} />
 
       <ProductBlock title="PATE CHO CHÓ" products={dogProducts} />
@@ -32,6 +36,8 @@ export default function DogProduct(){
       <ProductBlock title="THỨC ĂN DINH DƯỠNG CHO CHÓ" products={dogProducts} />
 
       <ProductBlock title="PHỤ KIỆN CHO CHÓ" products={dogProducts} />
+      <Contact backgroundColor="bg-wannapet-primary" />
+      <Footer/>
     </main> 
     )
 }

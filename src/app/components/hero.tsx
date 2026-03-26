@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="w-full bg-[#d9d4c2] py-[80px] px-[20px]">
+    <section className="w-full bg-wannapet-cream py-[80px] px-[20px]">
       <div className="flex flex-col md:flex-row justify-center items-center relative gap-[40px]">     
         <div className="w-full md:w-1/2">        
           <Image
