@@ -15,11 +15,11 @@ export default function Header() {
   ];
 
   return (
-    <header className="w-full bg-(--secondary-color) py-5">
+    <header className="w-full bg-[var(--secondary-color)] py-5">
       <div className="xl:max-w-300 mx-auto xl:px-0 px-5">
         <div className="flex items-center gap-5 mb-4">
           <button
-            className="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity"
+            className="cursor-pointer hover:opacity-80 transition-opacity shrink-0"
             aria-label="Menu"
           >
             <Image
