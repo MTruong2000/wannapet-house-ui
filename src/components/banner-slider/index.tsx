@@ -34,11 +34,11 @@ export default function BannerSlider() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((c) => (c + 1) % banners.length);
-    }, 4000);
+    }, 8000);
     return () => clearInterval(timer);
   }, []);
   return (
-    <div className="relative w-full overflow-hidden shadow-2xl group">
+    <div className="relative w-full overflow-hidden group">
       <div className="relative w-full aspect-[1294/464]">
         {banners.map((banner, i) => (
           <div
@@ -98,6 +98,24 @@ export default function BannerSlider() {
           <polyline points="9 18 15 12 9 6" />
         </svg>
       </button>
+
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2">
+        {banners.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            aria-label={`Go to banner ${i + 1}`}
+            className={`
+              transition-all duration-400 rounded-full
+              ${
+                i === current
+                  ? "w-6 h-2.5 bg-white shadow-md"
+                  : "w-2.5 h-2.5 bg-white/50 hover:bg-white/80"
+              }
+            `}
+          />
+        ))}
+      </div>
 
       <div className="absolute bottom-0 left-0 w-full h-0.5 bg-white/20 z-30">
         <div
