@@ -25,16 +25,7 @@ export default function DecorativeTitle({
       />
 
       <h2
-        className="
-          absolute 
-          left-1/2 top-1/2 
-          -translate-x-1/2 -translate-y-1/2
-          text-center 
-          font-bold 
-          text-lg md:text-2xl lg:text-3xl
-          tracking-wide
-          whitespace-nowrap
-        "
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2text-center font-bold text-lg md:text-2xl lg:text-3xltracking-widewhitespace-nowrap"
         style={{
           color: "white",
           fontFamily: "'SVN-Gilroy', 'Nunito', sans-serif",
