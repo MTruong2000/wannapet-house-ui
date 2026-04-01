@@ -1,6 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { toast } from "@/components/admin/toast";
+
+const API = "http://localhost:2906/api/admin";
 
 type Province = {
   id: string;
@@ -9,98 +12,13 @@ type Province = {
   created_at: string;
 };
 
-const INITIAL_DATA: Province[] = [
-  {
-    id: "1",
-    name: "Hồ Chí Minh",
-    slug: "ho-chi-minh",
-    created_at: "2024-01-01",
-  },
-  {
-    id: "2",
-    name: "Hà Nội",
-    slug: "ha-noi",
-    created_at: "2024-01-02",
-  },
-  {
-    id: "3",
-    name: "Đà Nẵng",
-    slug: "da-nang",
-    created_at: "2024-01-03",
-  },
-  {
-    id: "4",
-    name: "Cần Thơ",
-    slug: "can-tho",
-    created_at: "2024-01-04",
-  },
-  {
-    id: "5",
-    name: "Hải Phòng",
-    slug: "hai-phong",
-    created_at: "2024-01-05",
-  },
-  {
-    id: "6",
-    name: "Bình Dương",
-    slug: "binh-duong",
-    created_at: "2024-01-06",
-  },
-  {
-    id: "7",
-    name: "Đồng Nai",
-    slug: "dong-nai",
-    created_at: "2024-01-07",
-  },
-  {
-    id: "8",
-    name: "Khánh Hòa",
-    slug: "khanh-hoa",
-    created_at: "2024-01-08",
-  },
-  {
-    id: "9",
-    name: "Lâm Đồng",
-    slug: "lam-dong",
-    created_at: "2024-01-09",
-  },
-  {
-    id: "10",
-    name: "Quảng Ninh",
-    slug: "quang-ninh",
-    created_at: "2024-01-10",
-  },
-  {
-    id: "11",
-    name: "Nghệ An",
-    slug: "nghe-an",
-    created_at: "2024-01-11",
-  },
-  {
-    id: "12",
-    name: "Thanh Hóa",
-    slug: "thanh-hoa",
-    created_at: "2024-01-12",
-  },
-  {
-    id: "13",
-    name: "Bắc Ninh",
-    slug: "bac-ninh",
-    created_at: "2024-01-13",
-  },
-  {
-    id: "14",
-    name: "Thừa Thiên Huế",
-    slug: "thua-thien-hue",
-    created_at: "2024-01-14",
-  },
-  {
-    id: "15",
-    name: "An Giang",
-    slug: "an-giang",
-    created_at: "2024-01-15",
-  },
-];
+type PaginatedResponse = {
+  data: Province[];
+  total: number;
+  page: number;
+  limit: number;
+  total_pages: number;
+};
 
 function toSlug(str: string) {
   return str
@@ -118,32 +36,21 @@ function Modal({
   onClose,
   onSave,
   initial,
+  saving,
 }: {
   open: boolean;
   onClose: () => void;
-  onSave: (data: Omit<Province, "id" | "created_at">) => void;
+  onSave: (data: { name: string; slug: string }) => void;
   initial?: Province | null;
+  saving: boolean;
 }) {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState(() => ({
     name: initial?.name ?? "",
     slug: initial?.slug ?? "",
-  });
+  }));
   const [slugManual, setSlugManual] = useState(false);
 
   if (!open) return null;
-
-  const handleNameChange = (val: string) => {
-    setForm((f) => ({
-      ...f,
-      name: val,
-      slug: slugManual ? f.slug : toSlug(val),
-    }));
-  };
-
-  const handleSlugChange = (val: string) => {
-    setSlugManual(true);
-    setForm((f) => ({ ...f, slug: val }));
-  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
@@ -151,7 +58,6 @@ function Modal({
         <h3 className="text-white font-semibold text-base mb-5">
           {initial ? "Chỉnh sửa tỉnh thành" : "Thêm tỉnh thành mới"}
         </h3>
-
         <div className="space-y-4">
           <div>
             <label className="block text-sm text-gray-400 mb-1.5">
@@ -160,11 +66,16 @@ function Modal({
             <input
               className="w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all"
               value={form.name}
-              onChange={(e) => handleNameChange(e.target.value)}
+              onChange={(e) => {
+                const val = e.target.value;
+                setForm((f) => ({
+                  name: val,
+                  slug: slugManual ? f.slug : toSlug(val),
+                }));
+              }}
               placeholder="VD: Hồ Chí Minh"
             />
           </div>
-
           <div>
             <label className="block text-sm text-gray-400 mb-1.5">
               Slug <span className="text-gray-600 text-xs">(tự động tạo)</span>
@@ -172,27 +83,50 @@ function Modal({
             <input
               className="w-full bg-gray-800 border border-gray-700 text-gray-300 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all font-mono"
               value={form.slug}
-              onChange={(e) => handleSlugChange(e.target.value)}
+              onChange={(e) => {
+                setSlugManual(true);
+                setForm((f) => ({ ...f, slug: e.target.value }));
+              }}
               placeholder="vd: ho-chi-minh"
             />
           </div>
         </div>
-
         <div className="flex gap-3 mt-6">
           <button
             onClick={onClose}
-            className="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl py-2.5 text-sm font-medium transition-colors"
+            disabled={saving}
+            className="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl py-2.5 text-sm font-medium transition-colors disabled:opacity-50"
           >
             Huỷ
           </button>
           <button
             onClick={() => {
-              if (!form.name.trim()) return;
-              onSave(form);
-              onClose();
+              if (form.name.trim()) onSave(form);
             }}
-            className="flex-1 bg-amber-500 hover:bg-amber-400 text-gray-950 rounded-xl py-2.5 text-sm font-semibold transition-colors"
+            disabled={saving || !form.name.trim()}
+            className="flex-1 bg-amber-500 hover:bg-amber-400 text-gray-950 rounded-xl py-2.5 text-sm font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
           >
+            {saving && (
+              <svg
+                className="w-4 h-4 animate-spin"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8z"
+                />
+              </svg>
+            )}
             Lưu
           </button>
         </div>
@@ -201,69 +135,93 @@ function Modal({
   );
 }
 
+const PAGE_SIZE = 20;
+
 export default function ProvincesPage() {
-  const [provinces, setProvinces] = useState<Province[]>(INITIAL_DATA);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editItem, setEditItem] = useState<Province | null>(null);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [result, setResult] = useState<PaginatedResponse | null>(null);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const PAGE_SIZE = 5;
 
-  const filtered = provinces.filter(
-    (p) =>
-      p.name.toLowerCase().includes(search.toLowerCase()) ||
-      p.slug.toLowerCase().includes(search.toLowerCase())
-  );
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editItem, setEditItem] = useState<Province | null>(null);
+  const [saving, setSaving] = useState(false);
 
-  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
-  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
-  const handleSearch = (val: string) => {
-    setSearch(val);
-    setPage(1);
-  };
-
-  const handleAdd = () => {
-    setEditItem(null);
-    setModalOpen(true);
-  };
-
-  const handleEdit = (item: Province) => {
-    setEditItem(item);
-    setModalOpen(true);
-  };
-
-  const handleSave = (data: Omit<Province, "id" | "created_at">) => {
-    if (editItem) {
-      setProvinces((s) =>
-        s.map((x) => (x.id === editItem.id ? { ...x, ...data } : x))
+  const fetchData = useCallback(async (s: string, p: number) => {
+    setLoading(true);
+    try {
+      const res = await fetch(
+        `${API}/provinces?search=${encodeURIComponent(
+          s
+        )}&page=${p}&limit=${PAGE_SIZE}`,
+        { credentials: "include" }
       );
-    } else {
-      setProvinces((s) => [
-        ...s,
-        {
-          id: crypto.randomUUID(),
-          ...data,
-          created_at: new Date().toISOString().split("T")[0],
-        },
-      ]);
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      setResult(data);
+    } catch {
+      toast.error("Không thể tải danh sách tỉnh thành");
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const confirmDelete = () => {
-    if (deleteId) {
-      setProvinces((s) => s.filter((x) => x.id !== deleteId));
-      setDeleteId(null);
-    }
-  };
+  }, []);
 
   useEffect(() => {
-    if (page > totalPages) {
-      setPage(1);
+    const timer = setTimeout(() => fetchData(search, page), 300);
+    return () => clearTimeout(timer);
+  }, [search, page, fetchData]);
+
+  const handleSave = async (form: { name: string; slug: string }) => {
+    setSaving(true);
+    try {
+      const url = editItem
+        ? `${API}/provinces/${editItem.id}`
+        : `${API}/provinces`;
+      const method = editItem ? "PUT" : "POST";
+      const res = await fetch(url, {
+        method,
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+      toast.success(editItem ? "Cập nhật thành công" : "Thêm mới thành công");
+      setModalOpen(false);
+      fetchData(search, page);
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Có lỗi xảy ra");
+    } finally {
+      setSaving(false);
     }
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, totalPages]);
+  };
+
+  const handleDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`${API}/provinces/${deleteId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+      toast.success("Xoá thành công");
+      setDeleteId(null);
+      if (result?.data.length === 1 && page > 1) setPage((p) => p - 1);
+      else fetchData(search, page);
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Có lỗi xảy ra");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const provinces = result?.data ?? [];
+  const totalPages = result?.total_pages ?? 1;
 
   return (
     <>
@@ -291,11 +249,17 @@ export default function ProvincesPage() {
                 className="bg-gray-800 border border-gray-700 text-white rounded-xl pl-9 pr-4 py-2 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all w-48"
                 placeholder="Tìm kiếm..."
                 value={search}
-                onChange={(e) => handleSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setPage(1);
+                }}
               />
             </div>
             <button
-              onClick={handleAdd}
+              onClick={() => {
+                setEditItem(null);
+                setModalOpen(true);
+              }}
               className="flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-gray-950 font-semibold text-xs rounded-xl px-4 py-2 transition-colors shrink-0"
             >
               <svg
@@ -320,35 +284,67 @@ export default function ProvincesPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-800">
-                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3 w-10">
-                  #
-                </th>
-                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">
-                  Tên tỉnh thành
-                </th>
-                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">
-                  Slug
-                </th>
-                <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">
-                  Ngày tạo
-                </th>
-                <th className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3">
-                  Thao tác
-                </th>
+                {["#", "Tên tỉnh thành", "Slug", "Ngày tạo", "Thao tác"].map(
+                  (h, i) => (
+                    <th
+                      key={h}
+                      className={`text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3 ${
+                        i === 4 ? "text-right" : "text-left"
+                      } ${i === 0 ? "w-10" : ""}`}
+                    >
+                      {h}
+                    </th>
+                  )
+                )}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800/50">
-              {paginated.length === 0 ? (
+              {loading ? (
+                Array.from({ length: 5 }).map((_, i) => (
+                  <tr key={i}>
+                    {Array.from({ length: 5 }).map((_, j) => (
+                      <td key={j} className="px-6 py-4">
+                        <div
+                          className="h-4 bg-gray-800 rounded animate-pulse"
+                          style={{ width: j === 4 ? "80px" : "100%" }}
+                        />
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : provinces.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={5}
-                    className="px-6 py-10 text-center text-gray-500 text-sm"
-                  >
-                    Không tìm thấy kết quả nào.
+                  <td colSpan={5} className="px-6 py-16 text-center">
+                    <div className="flex flex-col items-center gap-3 text-gray-500">
+                      <svg
+                        className="w-10 h-10 opacity-30"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      <p className="text-sm">
+                        {search
+                          ? "Không tìm thấy kết quả nào."
+                          : "Chưa có tỉnh thành nào."}
+                      </p>
+                    </div>
                   </td>
                 </tr>
               ) : (
-                paginated.map((item, idx) => (
+                provinces.map((item, idx) => (
                   <tr
                     key={item.id}
                     className="hover:bg-gray-800/40 transition-colors"
@@ -365,12 +361,15 @@ export default function ProvincesPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-gray-400">
-                      {item.created_at}
+                      {item.created_at.split("T")[0]}
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button
-                          onClick={() => handleEdit(item)}
+                          onClick={() => {
+                            setEditItem({ ...item });
+                            setModalOpen(true);
+                          }}
                           className="px-3 py-1.5 text-xs font-medium text-gray-300 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors"
                         >
                           Sửa
@@ -388,11 +387,12 @@ export default function ProvincesPage() {
               )}
             </tbody>
           </table>
+
           <div className="px-6 py-3 border-t border-gray-800 flex items-center justify-between">
             <p className="text-xs text-gray-500">
-              Hiển thị {paginated.length} / {filtered.length} bản ghi
+              Tổng <span className="text-white">{result?.total ?? 0}</span> bản
+              ghi
             </p>
-
             {totalPages > 1 && (
               <div className="flex items-center gap-1">
                 <button
@@ -414,24 +414,21 @@ export default function ProvincesPage() {
                     />
                   </svg>
                 </button>
-
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(
                   (p) => (
                     <button
                       key={p}
                       onClick={() => setPage(p)}
-                      className={`w-8 h-8 rounded-lg text-xs font-medium transition-colors
-                    ${
-                      p === page
-                        ? "bg-amber-500 text-gray-950"
-                        : "text-gray-400 hover:bg-gray-800 hover:text-white"
-                    }`}
+                      className={`w-8 h-8 rounded-lg text-xs font-medium transition-colors ${
+                        p === page
+                          ? "bg-amber-500 text-gray-950"
+                          : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                      }`}
                     >
                       {p}
                     </button>
                   )
                 )}
-
                 <button
                   onClick={() => setPage((p) => p + 1)}
                   disabled={page === totalPages}
@@ -458,10 +455,12 @@ export default function ProvincesPage() {
       </div>
 
       <Modal
+        key={editItem?.id || "new"}
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onSave={handleSave}
         initial={editItem}
+        saving={saving}
       />
 
       {deleteId && (
@@ -495,14 +494,37 @@ export default function ProvincesPage() {
             <div className="flex gap-3 mt-5">
               <button
                 onClick={() => setDeleteId(null)}
-                className="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl py-2.5 text-sm font-medium transition-colors"
+                disabled={deleting}
+                className="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl py-2.5 text-sm font-medium transition-colors disabled:opacity-50"
               >
                 Huỷ
               </button>
               <button
-                onClick={confirmDelete}
-                className="flex-1 bg-red-500 hover:bg-red-400 text-white rounded-xl py-2.5 text-sm font-semibold transition-colors"
+                onClick={handleDelete}
+                disabled={deleting}
+                className="flex-1 bg-red-500 hover:bg-red-400 text-white rounded-xl py-2.5 text-sm font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
               >
+                {deleting && (
+                  <svg
+                    className="w-4 h-4 animate-spin"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8z"
+                    />
+                  </svg>
+                )}
                 Xoá
               </button>
             </div>
