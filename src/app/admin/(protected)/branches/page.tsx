@@ -15,6 +15,7 @@ type Location = {
   phone: string | null;
   province_id: string | null;
   province_name: string | null;
+  is_default: boolean;
   is_active: boolean;
   created_at: string;
 };
@@ -44,18 +45,17 @@ type FormState = {
   address: string;
   phone: string;
   province_id: string;
+  is_default: boolean;
   is_active: boolean;
 };
 
 function Modal({
-  open,
   onClose,
   onSave,
   initial,
   saving,
   provinces,
 }: {
-  open: boolean;
   onClose: () => void;
   onSave: (data: FormState) => void;
   initial?: Location | null;
@@ -68,11 +68,10 @@ function Modal({
     address: initial?.address ?? "",
     phone: initial?.phone ?? "",
     province_id: initial?.province_id ?? "",
+    is_default: initial?.is_default ?? false,
     is_active: initial?.is_active ?? true,
   });
   const [slugManual, setSlugManual] = useState(false);
-
-  if (!open) return null;
 
   const set = (k: keyof FormState, v: string | boolean) =>
     setForm((f) => ({ ...f, [k]: v }));
@@ -162,6 +161,28 @@ function Modal({
           </div>
 
           <div className="flex items-center justify-between bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
+            <div>
+              <p className="text-sm text-gray-300">Cơ sở mặc định</p>
+              <p className="text-xs text-gray-600 mt-0.5">
+                Hiển thị mặc định trên web
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => set("is_default", !form.is_default)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                form.is_default ? "bg-amber-500" : "bg-gray-600"
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                  form.is_default ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
             <span className="text-sm text-gray-300">Trạng thái hoạt động</span>
             <button
               type="button"
@@ -233,6 +254,7 @@ export default function BranchesPage() {
   const [provinces, setProvinces] = useState<Province[]>([]);
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalKey, setModalKey] = useState(0);
   const [editItem, setEditItem] = useState<Location | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -269,6 +291,12 @@ export default function BranchesPage() {
     return () => clearTimeout(t);
   }, [search, page, fetchData]);
 
+  const openModal = (item: Location | null) => {
+    setEditItem(item);
+    setModalKey((k) => k + 1);
+    setModalOpen(true);
+  };
+
   const handleSave = async (form: FormState) => {
     setSaving(true);
     try {
@@ -286,6 +314,7 @@ export default function BranchesPage() {
           address: form.address || null,
           phone: form.phone || null,
           province_id: form.province_id || null,
+          is_default: form.is_default,
           is_active: form.is_active,
         }),
       });
@@ -358,10 +387,7 @@ export default function BranchesPage() {
               />
             </div>
             <button
-              onClick={() => {
-                setEditItem(null);
-                setModalOpen(true);
-              }}
+              onClick={() => openModal(null)}
               className="flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-gray-950 font-semibold text-xs rounded-xl px-4 py-2 transition-colors shrink-0"
             >
               <svg
@@ -455,7 +481,14 @@ export default function BranchesPage() {
                       {(page - 1) * PAGE_SIZE + idx + 1}
                     </td>
                     <td className="px-6 py-4">
-                      <p className="text-white font-medium">{item.name}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-white font-medium">{item.name}</p>
+                        {item.is_default && (
+                          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                            Mặc định
+                          </span>
+                        )}
+                      </div>
                       <p className="text-xs font-mono text-amber-400/70 mt-0.5">
                         {item.slug}
                       </p>
@@ -490,10 +523,7 @@ export default function BranchesPage() {
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button
-                          onClick={() => {
-                            setEditItem({ ...item });
-                            setModalOpen(true);
-                          }}
+                          onClick={() => openModal({ ...item })}
                           className="px-3 py-1.5 text-xs font-medium text-gray-300 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors"
                         >
                           Sửa
@@ -578,15 +608,16 @@ export default function BranchesPage() {
         </div>
       </div>
 
-      <Modal
-        key={editItem?.id || "new"}
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onSave={handleSave}
-        initial={editItem}
-        saving={saving}
-        provinces={provinces}
-      />
+      {modalOpen && (
+        <Modal
+          key={modalKey}
+          onClose={() => setModalOpen(false)}
+          onSave={handleSave}
+          initial={editItem}
+          saving={saving}
+          provinces={provinces}
+        />
+      )}
 
       {deleteId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
