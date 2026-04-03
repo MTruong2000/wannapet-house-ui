@@ -44,13 +44,11 @@ export default function LocationModal({
         ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
       onClick={onClose}
     >
-      {/* Backdrop */}
       <div
         className={`absolute inset-0 transition-all duration-300
           ${visible ? "bg-black/40 backdrop-blur-sm" : "bg-black/0"}`}
       />
 
-      {/* Modal card */}
       <div
         className={`relative z-10 rounded-2xl px-6 py-6 w-full max-w-sm mx-4 shadow-2xl
           transition-all duration-350 ease-[cubic-bezier(0.34,1.56,0.64,1)]
@@ -62,7 +60,6 @@ export default function LocationModal({
         style={{ backgroundColor: "var(--primary-color)" }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Icon + title */}
         <div
           className={`flex flex-col items-center mb-5 transition-all duration-400
             ${
@@ -91,7 +88,6 @@ export default function LocationModal({
           </h2>
         </div>
 
-        {/* Location list */}
         {loading ? (
           <div className="text-center text-white py-4 text-sm opacity-80">
             Đang tải...

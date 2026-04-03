@@ -15,10 +15,10 @@ function SidebarMenu({
 }) {
   const menuItems = [
     { label: "Trang chủ", href: "/", icon: "🏠" },
-    { label: "Sản phẩm cho Chó", href: "#", icon: "🐶" },
-    { label: "Sản phẩm cho Mèo", href: "#", icon: "🐱" },
-    { label: "Dịch vụ", href: "#", icon: "✂️" },
-    { label: "Phụ kiện", href: "#", icon: "🎀" },
+    { label: "Sản phẩm cho Chó", href: "/san-pham-cho-cho", icon: "🐶" },
+    { label: "Sản phẩm cho Mèo", href: "/san-pham-cho-meo", icon: "🐱" },
+    { label: "Dịch vụ", href: "/dich-vu", icon: "✂️" },
+    { label: "Phụ kiện", href: "/phu-kien", icon: "🎀" },
   ];
 
   useEffect(() => {
@@ -149,10 +149,10 @@ export default function Header() {
   } = useLocation();
 
   const navItems = [
-    { label: "SẢN PHẨM CHO CHÓ", href: "#" },
-    { label: "SẢN PHẨM CHO MÈO", href: "#" },
-    { label: "DỊCH VỤ", href: "#" },
-    { label: "PHỤ KIỆN", href: "#" },
+    { label: "SẢN PHẨM CHO CHÓ", href: "/san-pham-cho-cho" },
+    { label: "SẢN PHẨM CHO MÈO", href: "/san-pham-cho-meo" },
+    { label: "DỊCH VỤ", href: "/dich-vu" },
+    { label: "PHỤ KIỆN", href: "/phu-kien" },
   ];
 
   return (

@@ -52,7 +52,7 @@ export default function PetProductSection({
           observer.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.05, rootMargin: "0px 0px -50px 0px" }
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
@@ -76,7 +76,7 @@ export default function PetProductSection({
         width: 286,
         height: 367,
         position: "relative",
-        transition: "opacity 0.7s ease, transform 0.7s ease",
+        transition: visible ? "opacity 0.7s ease, transform 0.7s ease" : "none",
         opacity: visible ? 1 : 0,
         transform: visible
           ? "translateX(0)"
@@ -118,7 +118,9 @@ export default function PetProductSection({
       <div
         className="flex items-center justify-center gap-4"
         style={{
-          transition: "opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s",
+          transition: visible
+            ? "opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s"
+            : "none",
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(-16px)",
         }}
@@ -175,21 +177,19 @@ export default function PetProductSection({
           {products.map((product, index) => (
             <div
               key={index}
-              className="flex-shrink-0 rounded-2xl overflow-hidden relative cursor-pointer"
+              className="flex-shrink-0 rounded-2xl overflow-hidden relative cursor-pointer hover:scale-[1.03]"
               style={{
                 width: 217,
                 height: 285,
-                transition: `opacity 0.6s ease ${0.2 + index * 0.1}s,
-                             transform 0.6s ease ${0.2 + index * 0.1}s,
-                             scale 0.2s ease`,
+                transition: visible
+                  ? `opacity 0.6s ease ${
+                      0.2 + index * 0.1
+                    }s, transform 0.6s ease ${
+                      0.2 + index * 0.1
+                    }s, scale 0.2s ease`
+                  : "none",
                 opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(24px)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "scale(1.03)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "scale(1)";
+                transform: visible ? "translateY(0)" : "translateY(12px)",
               }}
             >
               {product.image_url ? (
@@ -239,7 +239,9 @@ export default function PetProductSection({
         className="flex justify-center"
         style={{
           marginTop: "auto",
-          transition: "opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s",
+          transition: visible
+            ? "opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s"
+            : "none",
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(12px)",
         }}
