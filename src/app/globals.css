@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --primary-color: #9CA960;
-  --secondary-color: #F8F3E1;
+  --primary-color: #9ca960;
+  --secondary-color: #f8f3e1;
 }
 
 body {
@@ -15,6 +15,24 @@ body {
 }
 
 @keyframes progress-slider {
-  from { width: 0%; }
-  to { width: 100%; }
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.animate-slideIn {
+  animation: slideIn 0.3s ease both;
 }

@@ -39,7 +39,6 @@ export default function HomeRegisterSocial() {
           className="object-cover"
         />
 
-        {/* Content */}
         <div className="relative text-center z-10 flex flex-col justify-center h-full px-10 py-12 gap-6">
           <h2 className=" text-3xl font-extrabold uppercase tracking-wide text-[var(--primary-color)]">
             Kết Nối Mạng Xã Hội
