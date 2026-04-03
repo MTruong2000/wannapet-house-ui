@@ -55,7 +55,6 @@ function toSlug(str: string) {
     .replace(/\s+/g, "-");
 }
 
-/* ─── Modal ─────────────────────────────────────────────────── */
 function Modal({
   open,
   onClose,
@@ -219,7 +218,6 @@ function Modal({
   );
 }
 
-/* ─── Delete Confirm ─────────────────────────────────────────── */
 function DeleteDialog({
   target,
   onCancel,
@@ -302,7 +300,6 @@ function DeleteDialog({
   );
 }
 
-/* ─── Main Page ──────────────────────────────────────────────── */
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [allCategories, setAllCategories] = useState<CategoryOption[]>([]);
@@ -320,7 +317,6 @@ export default function CategoriesPage() {
   const [deleteTarget, setDeleteTarget] = useState<Category | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  /* fetch list */
   const fetchCategories = useCallback(async () => {
     setLoading(true);
     try {
@@ -362,7 +358,6 @@ export default function CategoriesPage() {
     fetchAllCategories();
   }, [fetchAllCategories]);
 
-  /* modal helpers */
   const openCreate = () => {
     setEditTarget(null);
     setForm(EMPTY_FORM);
@@ -386,7 +381,6 @@ export default function CategoriesPage() {
     setForm(EMPTY_FORM);
   };
 
-  /* submit */
   const handleSubmit = async () => {
     if (!form.name.trim() || !form.slug.trim()) {
       toast.error("Vui lòng điền đầy đủ thông tin");
@@ -425,7 +419,6 @@ export default function CategoriesPage() {
     }
   };
 
-  /* delete */
   const handleDelete = async () => {
     if (!deleteTarget) return;
     setDeleting(true);
@@ -453,7 +446,6 @@ export default function CategoriesPage() {
 
   const parentOptions = allCategories.filter((c) => c.id !== editTarget?.id);
 
-  /* ── render ── */
   return (
     <>
       <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">

@@ -36,3 +36,7 @@ body {
 .animate-slideIn {
   animation: slideIn 0.3s ease both;
 }
+
+.ease-modal {
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}

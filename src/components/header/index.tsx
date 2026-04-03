@@ -65,8 +65,7 @@ function SidebarMenu({
           />
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-full border-2 flex items-center justify-center
-              text-lg transition-all duration-200 hover:text-white"
+            className="w-9 h-9 rounded-full border-2 flex items-center justify-center text-lg transition-all duration-200 hover:text-white"
             style={{
               borderColor: "var(--primary-color)",
               color: "var(--primary-color)",
