@@ -31,7 +31,7 @@ export default function Header() {
       <header className="w-full bg-[var(--secondary-color)] py-5">
         <div className="xl:max-w-300 mx-auto xl:px-0 px-5">
           <div className="flex items-center gap-5 mb-4">
-            {/* <button
+            <button
               className="cursor-pointer hover:opacity-80 transition-opacity shrink-0"
               aria-label="Menu"
             >
@@ -41,7 +41,7 @@ export default function Header() {
                 width={81}
                 height={93}
               />
-            </button> */}
+            </button>
 
             <Link href="/" className="shrink-0">
               <Image
