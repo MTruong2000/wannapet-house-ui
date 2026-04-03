@@ -6,12 +6,14 @@ type DecorativeTitleProps = {
   text: string;
   svg?: string;
   className?: string;
+  textColor?: string;
 };
 
 export default function DecorativeTitle({
   text,
   svg = "/icons/home-decorative-oval.svg",
   className = "",
+  textColor = "white",
 }: DecorativeTitleProps) {
   return (
     <div className={`relative flex items-center justify-center ${className}`}>
@@ -27,7 +29,7 @@ export default function DecorativeTitle({
       <h2
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2text-center font-bold text-lg md:text-2xl lg:text-3xltracking-widewhitespace-nowrap"
         style={{
-          color: "white",
+          color: textColor,
           fontFamily: "'SVN-Gilroy', 'Nunito', sans-serif",
         }}
       >

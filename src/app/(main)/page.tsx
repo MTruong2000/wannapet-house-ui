@@ -1,4 +1,5 @@
 import BannerSlider from "@/components/banner-slider";
+import FeedbackSection from "@/components/feedback";
 import FeaturedServices from "@/components/featured-services";
 import PetProductSection from "@/components/pet-product-section";
 import WelcomeToWannapet from "@/components/welcome-to-wannapet";
@@ -45,6 +46,7 @@ export default function Home() {
         petImagePosition="left"
         viewMoreHref="/phu-kien"
       />
+      <FeedbackSection />
     </>
   );
 }

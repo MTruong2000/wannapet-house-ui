@@ -115,7 +115,6 @@ export default function PetProductSection({
 
   const productsBlock = (
     <div className="flex flex-col min-w-0">
-      {/* Header icons + title */}
       <div
         className="flex items-center justify-center gap-4"
         style={{
@@ -161,7 +160,6 @@ export default function PetProductSection({
         </div>
       </div>
 
-      {/* Products list */}
       {loading ? (
         <div className="flex gap-4">
           {[0, 1, 2].map((i) => (
@@ -237,7 +235,6 @@ export default function PetProductSection({
         </div>
       )}
 
-      {/* Xem thêm */}
       <div
         className="flex justify-center"
         style={{

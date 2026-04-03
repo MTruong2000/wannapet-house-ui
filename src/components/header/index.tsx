@@ -76,7 +76,6 @@ export default function Header() {
               </button>
             </div>
 
-            {/* Location Icon Button */}
             <button
               onClick={openModal}
               className="shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
