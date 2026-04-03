@@ -3,6 +3,7 @@ import FeedbackSection from "@/components/feedback";
 import FeaturedServices from "@/components/featured-services";
 import PetProductSection from "@/components/pet-product-section";
 import WelcomeToWannapet from "@/components/welcome-to-wannapet";
+import HomeRegisterSocial from "@/components/register-social";
 
 export default function Home() {
   return (
@@ -47,6 +48,7 @@ export default function Home() {
         viewMoreHref="/phu-kien"
       />
       <FeedbackSection />
+      <HomeRegisterSocial />
     </>
   );
 }

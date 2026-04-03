@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import DecorativeTitle from "../common/DecorativeTitle";
 const feedbacks = [
@@ -59,11 +57,8 @@ function StarRating({ count }: { count: number }) {
 
 export default function FeedbackSection() {
   return (
-    <section
-      className="w-full"
-      style={{ backgroundColor: "white" }}
-    >
-      <DecorativeTitle text="Feedback" textColor="#9CA960"/>
+    <section className="w-full bg-white py-5">
+      <DecorativeTitle text="Feedback" textColor="#9CA960" />
       <div className="max-w-6xl mx-auto flex justify-center items-start gap-6">
         {feedbacks.map((item, idx) => (
           <div
