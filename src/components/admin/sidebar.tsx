@@ -103,6 +103,25 @@ const NAV_ITEMS = [
       </svg>
     ),
   },
+  {
+    label: "Dịch vụ",
+    href: "/admin/services",
+    icon: (
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.8}
+          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+        />
+      </svg>
+    ),
+  },
 ];
 
 function Sidebar({
@@ -126,11 +145,12 @@ function Sidebar({
   return (
     <aside
       className={`
-          flex flex-col h-screen bg-gray-900 border-r border-gray-800
-          transition-all duration-300 ease-in-out flex-shrink-0
-          ${collapsed ? "w-16" : "w-60"}
-        `}
+        flex flex-col h-screen bg-gray-900 border-r border-gray-800
+        transition-all duration-300 ease-in-out flex-shrink-0
+        ${collapsed ? "w-16" : "w-60"}
+      `}
     >
+      {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-gray-800 min-h-[65px]">
         <div className="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center flex-shrink-0">
           <svg
@@ -157,6 +177,7 @@ function Sidebar({
         )}
       </div>
 
+      {/* Nav */}
       <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-1">
         {NAV_ITEMS.map((item) => {
           const isActive = pathname === item.href;
@@ -166,14 +187,14 @@ function Sidebar({
               href={item.href}
               title={collapsed ? item.label : undefined}
               className={`
-                  flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
-                  transition-all duration-150 group relative
-                  ${
-                    isActive
-                      ? "bg-amber-500/10 text-amber-400"
-                      : "text-gray-400 hover:bg-gray-800 hover:text-white"
-                  }
-                `}
+                flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
+                transition-all duration-150 group relative
+                ${
+                  isActive
+                    ? "bg-amber-500/10 text-amber-400"
+                    : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                }
+              `}
             >
               <span className="flex-shrink-0">{item.icon}</span>
               {!collapsed && <span className="truncate">{item.label}</span>}
@@ -185,6 +206,7 @@ function Sidebar({
         })}
       </nav>
 
+      {/* Bottom */}
       <div className="border-t border-gray-800 p-2 space-y-1">
         <button
           onClick={onToggle}
