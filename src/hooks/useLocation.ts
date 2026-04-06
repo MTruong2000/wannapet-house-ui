@@ -64,6 +64,7 @@ export function useLocation() {
     localStorage.setItem(LOCATION_KEY, slug);
     setSelectedSlug(slug);
     setIsModalOpen(false);
+    window.location.reload();
   };
 
   const closeModal = () => {

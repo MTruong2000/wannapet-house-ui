@@ -4,9 +4,9 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 
 const banners = [
-  { src: "/imgs/banner-01.webp", alt: "Banner 01 - Wannapet" },
-  { src: "/imgs/banner-02.webp", alt: "Banner 02 - Wannapet" },
-  { src: "/imgs/banner-03.webp", alt: "Banner 03 - Wannapet" },
+  { src: "/imgs/banner-01.png", alt: "Banner 01 - Wannapet" },
+  { src: "/imgs/banner-02.png", alt: "Banner 02 - Wannapet" },
+  { src: "/imgs/banner-03.png", alt: "Banner 03 - Wannapet" },
 ];
 
 export default function BannerSlider() {
