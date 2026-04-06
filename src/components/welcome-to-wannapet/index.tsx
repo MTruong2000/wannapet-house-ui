@@ -1,8 +1,30 @@
+"use client";
+
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function WelcomeToWannapet() {
+  const router = useRouter();
+  const [leaving, setLeaving] = useState(false);
+
+  function handleLearnMore() {
+    setLeaving(true);
+    // Đợi animation fade-out rồi mới navigate
+    setTimeout(() => {
+      router.push("/about");
+    }, 420);
+  }
+
   return (
-    <section className="relative w-full overflow-hidden">
+    <section
+      className="relative w-full overflow-hidden"
+      style={{
+        opacity: leaving ? 0 : 1,
+        transform: leaving ? "translateY(-12px)" : "translateY(0)",
+        transition: "opacity 0.4s ease, transform 0.4s ease",
+      }}
+    >
       <div className="absolute inset-0 pointer-events-none opacity-30" />
 
       <div className="relative mx-auto max-w-6xl px-8 py-14 flex flex-col md:flex-row items-center gap-10">
@@ -46,33 +68,63 @@ export default function WelcomeToWannapet() {
           </p>
 
           <button
-            className="bg-[var(--primary-color)] group relative inline-flex items-center gap-2 rounded-full px-7 py-3 font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95"
+            onClick={handleLearnMore}
+            disabled={leaving}
+            className="bg-[var(--primary-color)] group relative inline-flex items-center gap-2 rounded-full px-7 py-3 font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
             style={{
               fontFamily: "'Nunito', 'Trebuchet MS', sans-serif",
               fontSize: "0.95rem",
               boxShadow: "0 4px 15px rgba(156,169,96,0.35)",
             }}
           >
-            Tìm hiểu thêm về{" "}
-            <span
-              className="font-black"
-              style={{ fontFamily: "'Nunito', sans-serif" }}
-            >
-              wannapet
-            </span>
-            <svg
-              className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2.5}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            {leaving ? (
+              /* Spinner khi đang chuyển trang */
+              <>
+                <svg
+                  className="w-4 h-4 animate-spin"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z"
+                  />
+                </svg>
+                <span>Đang chuyển trang…</span>
+              </>
+            ) : (
+              <>
+                Tìm hiểu thêm về{" "}
+                <span
+                  className="font-black"
+                  style={{ fontFamily: "'Nunito', sans-serif" }}
+                >
+                  wannapet
+                </span>
+                <svg
+                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </>
+            )}
           </button>
         </div>
 

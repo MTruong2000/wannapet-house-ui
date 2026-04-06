@@ -1,5 +1,6 @@
 import Image from "next/image";
 import DecorativeTitle from "../common/DecorativeTitle";
+
 const feedbacks = [
   {
     id: 1,
@@ -7,7 +8,6 @@ const feedbacks = [
     width: 300,
     height: 300,
     rotate: "-rotate-6",
-    position: "self-start mt-8",
     name: "Nguyễn Thị Lan",
     rating: 5,
     text: "Dịch vụ grooming tại WannaPet thực sự tuyệt vời! Bé poodle nhà mình được chăm sóc rất kỹ lưỡng, lông mượt mà và thơm tho. Nhân viên rất tận tâm và yêu thương thú cưng.",
@@ -18,7 +18,6 @@ const feedbacks = [
     width: 440,
     height: 270,
     rotate: "",
-    position: "self-center",
     name: "Trần Minh Khoa",
     rating: 5,
     text: "Mình rất hài lòng khi gửi bé mèo Ba Tư tại WannaPet. Không gian sạch sẽ, thoáng mát, bé được tắm và chải lông chuyên nghiệp. Sẽ quay lại thường xuyên!",
@@ -29,7 +28,6 @@ const feedbacks = [
     width: 300,
     height: 300,
     rotate: "rotate-6",
-    position: "self-start mt-8",
     name: "Phạm Thu Hà",
     rating: 5,
     text: "Bé corgi nhà mình rất nghịch ngợm nhưng các bạn nhân viên xử lý rất khéo léo. Lần nào đến cũng thấy bé vui vẻ, thoải mái. WannaPet xứng đáng 5 sao!",
@@ -42,7 +40,7 @@ function StarRating({ count }: { count: number }) {
       {Array.from({ length: 5 }).map((_, i) => (
         <svg
           key={i}
-          className={`w-4 h-4 ${
+          className={`h-4 w-4 ${
             i < count ? "text-yellow-400" : "text-gray-300"
           }`}
           fill="currentColor"
@@ -57,42 +55,49 @@ function StarRating({ count }: { count: number }) {
 
 export default function FeedbackSection() {
   return (
-    <section className="w-full bg-white py-5">
+    <section className="w-full bg-white py-10 md:py-14">
       <DecorativeTitle text="Feedback" textColor="#9CA960" />
-      <div className="max-w-6xl mx-auto flex justify-center items-start gap-6">
+
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 px-4 sm:px-6 md:gap-6 lg:flex-row lg:items-start lg:justify-center">
         {feedbacks.map((item, idx) => (
           <div
             key={item.id}
-            className={`flex flex-col items-center ${
-              idx === 1 ? "mt-0" : "mt-12"
+            className={`flex w-full max-w-[380px] flex-col items-center ${
+              idx === 1 ? "lg:mt-0" : "lg:mt-12"
             }`}
           >
             <div
-              className={`relative z-0  transform transition-all duration-300 hover:scale-105 hover:rotate-0 ${item.rotate}`}
-              style={{ width: item.width, height: item.height }}
+              className={`relative z-0 transform transition-all duration-300 hover:scale-105 hover:rotate-0 ${item.rotate}`}
+              style={{
+                width: idx === 1 ? "min(100%, 320px)" : "min(100%, 260px)",
+                height: idx === 1 ? "220px" : "260px",
+              }}
             >
               <Image
                 src={item.image}
                 alt={item.name}
                 fill
-                sizes="300px"
+                sizes="(max-width: 640px) 80vw, (max-width: 1024px) 320px, 300px"
                 className="object-contain"
                 priority
               />
             </div>
 
             <div
-              className={`
-          relative z-1 -mt-10 p-6 rounded-2xl border-2 bg-[#F8F3E1] shadow-md
-          ${idx === 1 ? "w-[380px] pt-14" : "w-[280px] pt-12"}
-        `}
+              className={`relative z-10 -mt-8 rounded-2xl border-2 bg-[#F8F3E1] p-5 shadow-md sm:p-6 ${
+                idx === 1
+                  ? "w-full max-w-[380px] pt-12 sm:pt-14"
+                  : "w-full max-w-[280px] pt-10 sm:pt-12"
+              }`}
               style={{ borderColor: "var(--primary-color, #9CA960)" }}
             >
               <StarRating count={item.rating} />
-              <p className="text-sm mt-2 leading-relaxed text-[#4a4a2e]">
+
+              <p className="mt-2 text-sm leading-relaxed text-[#4a4a2e] sm:text-[15px]">
                 {item.text}
               </p>
-              <p className="text-sm font-semibold mt-3 text-[#9CA960]">
+
+              <p className="mt-3 text-sm font-semibold text-[#9CA960]">
                 — {item.name}
               </p>
             </div>
