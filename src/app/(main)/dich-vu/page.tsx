@@ -2,8 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
-import Link from "next/link";
-
+import BookingModal  from "@/components/booking";
 /* ─────────────────────────── Types ─────────────────────────── */
 interface ServiceFeature {
   id: string;
@@ -84,7 +83,6 @@ function CheckIcon({ color = "#3B4E1E" }: { color?: string }) {
   );
 }
 
-/* ─────────────────────────── Clock Icon ─────────────────────────── */
 function ClockIcon() {
   return (
     <svg
@@ -102,7 +100,6 @@ function ClockIcon() {
   );
 }
 
-/* ─────────────────────────── Skeleton Banner ─────────────────────────── */
 function SkeletonBanner({ flip = false }: { flip?: boolean }) {
   return (
     <div
@@ -129,10 +126,12 @@ function ServiceBannerCard({
   service,
   index,
   flip,
+  onBook,
 }: {
   service: Service;
   index: number;
   flip: boolean;
+  onBook: (service: Service) => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -153,7 +152,6 @@ function ServiceBannerCard({
     return () => obs.disconnect();
   }, []);
 
-  /* alternating background tones */
   const isLight = index % 2 === 0;
   const bg = isLight ? "#F0F7DC" : "#3B4E1E";
   const textColor = isLight ? "#3B4E1E" : "#F0F7DC";
@@ -177,7 +175,6 @@ function ServiceBannerCard({
                      transform 0.6s cubic-bezier(.22,1,.36,1) ${index * 120}ms`,
       }}
     >
-      {/* Decorative paw watermark */}
       <div
         className="absolute pointer-events-none select-none"
         style={{
@@ -193,7 +190,7 @@ function ServiceBannerCard({
       </div>
 
       <div className={`flex ${flip ? "flex-row-reverse" : "flex-row"}`}>
-        {/* ── Image half — square 1:1 (624×624) ── */}
+        {/* Image */}
         <div
           className="relative shrink-0 overflow-hidden"
           style={{ width: "42%", aspectRatio: "1 / 1" }}
@@ -214,8 +211,6 @@ function ServiceBannerCard({
               <span className="text-7xl opacity-20">🐾</span>
             </div>
           )}
-
-          {/* Duration pill */}
           {service.duration && (
             <div
               className="absolute bottom-3 left-3 flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold"
@@ -225,26 +220,18 @@ function ServiceBannerCard({
                 color: "#CEE672",
               }}
             >
-              <ClockIcon />
-              {formatDuration(service.duration)}
+              <ClockIcon /> {formatDuration(service.duration)}
             </div>
           )}
-
-          {/* Corner ribbon */}
           <div
             className="absolute top-0 left-0 px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest text-white"
-            style={{
-              background: "#E05A2B",
-              borderBottomRightRadius: 14,
-            }}
+            style={{ background: "#E05A2B", borderBottomRightRadius: 14 }}
           >
             Wannapet
           </div>
         </div>
 
-        {/* ── Content half ── */}
         <div className="flex-1 p-5 sm:p-6 flex flex-col justify-center gap-3 z-10 self-stretch">
-          {/* Title */}
           <div>
             <p
               className="text-[10px] font-bold uppercase tracking-[0.15em] mb-1 opacity-60"
@@ -260,7 +247,6 @@ function ServiceBannerCard({
             </h2>
           </div>
 
-          {/* Features checklist */}
           {service.features.length > 0 && (
             <ul className="space-y-1.5">
               {service.features.slice(0, 5).map((f) => (
@@ -277,7 +263,6 @@ function ServiceBannerCard({
             </ul>
           )}
 
-          {/* If no features, show description */}
           {service.features.length === 0 && service.description && (
             <p
               className="text-xs leading-relaxed opacity-70 line-clamp-3"
@@ -287,11 +272,12 @@ function ServiceBannerCard({
             </p>
           )}
 
-          {/* Bottom row: price + CTA */}
           <div className="flex items-center gap-3 mt-1 flex-wrap">
-            <Link
-              href={`/dich-vu/${service.slug}`}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-extrabold text-white transition-all duration-200 hover:opacity-90 active:scale-95 shadow-md"
+            {/* ← NÚT ĐẶT LỊCH NGAY (đã thay Link bằng button) */}
+            <button
+              onClick={() => onBook(service)}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-extrabold text-white
+                         transition-all duration-200 hover:opacity-90 active:scale-95 shadow-md"
               style={{ background: ctaBg }}
             >
               ĐẶT LỊCH NGAY
@@ -308,7 +294,7 @@ function ServiceBannerCard({
                 <polyline points="12 8 16 12 12 16" />
                 <line x1="8" y1="12" x2="16" y2="12" />
               </svg>
-            </Link>
+            </button>
 
             {service.price > 0 && (
               <div>
@@ -333,7 +319,7 @@ function ServiceBannerCard({
   );
 }
 
-/* ─────────────────────────── Empty State ─────────────────────────── */
+/* ─────────────────────────── EmptyState ─────────────────────────── */
 function EmptyState({ message }: { message: string }) {
   return (
     <div className="flex flex-col items-center justify-center py-28 gap-4">
@@ -348,7 +334,6 @@ function EmptyState({ message }: { message: string }) {
   );
 }
 
-/* ─────────────────────────── Section Label ─────────────────────────── */
 function SectionDivider({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-4 py-2">
@@ -370,8 +355,7 @@ function SectionDivider({ label }: { label: string }) {
   );
 }
 
-/* ─────────────────────────── Pagination ─────────────────────────── */
-function Pagination({
+function PaginationBar({
   pagination,
   onPage,
 }: {
@@ -426,6 +410,9 @@ export default function ServicesPage() {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
 
+  // ← STATE CHO BOOKING MODAL
+  const [bookingService, setBookingService] = useState<Service | null>(null);
+
   const fetchServices = useCallback(async () => {
     const locationSlug = localStorage.getItem("selected_location_slug") || "";
     if (!locationSlug) {
@@ -467,7 +454,7 @@ export default function ServicesPage() {
           "radial-gradient(ellipse at 10% 0%, #D4E890 0%, transparent 45%), radial-gradient(ellipse at 90% 100%, #7A9C40 0%, transparent 45%)",
       }}
     >
-      {/* ── Hero ── */}
+      {/* Hero */}
       <div
         className="w-full pt-10 pb-7 px-4 text-center"
         style={{
@@ -481,7 +468,6 @@ export default function ServicesPage() {
         >
           🐾 Wannapet
         </div>
-
         <h1
           className="text-3xl sm:text-4xl font-extrabold leading-tight tracking-tight"
           style={{ color: "#3B4E1E", fontFamily: "'Nunito', sans-serif" }}
@@ -490,14 +476,12 @@ export default function ServicesPage() {
           <br />
           <span style={{ color: "#E05A2B" }}>Thú cưng chuyên nghiệp</span>
         </h1>
-
         <p
           className="mt-2 text-sm opacity-60 max-w-sm mx-auto"
           style={{ color: "#3B4E1E" }}
         >
           Tại Wanna Pet — mỗi bé đều xứng đáng được yêu thương 💚
         </p>
-
         {pagination && !loading && (
           <p className="mt-2 text-xs opacity-45" style={{ color: "#3B4E1E" }}>
             {pagination.total} dịch vụ tại chi nhánh của bạn
@@ -505,9 +489,8 @@ export default function ServicesPage() {
         )}
       </div>
 
-      {/* ── Content ── */}
+      {/* Content */}
       <div className="w-full max-w-[1200px] mx-auto px-10 pb-20 space-y-4">
-        {/* Loading skeletons */}
         {loading && (
           <>
             <SectionDivider label="Đang tải..." />
@@ -517,15 +500,11 @@ export default function ServicesPage() {
           </>
         )}
 
-        {/* Error */}
         {!loading && error && <EmptyState message={error} />}
-
-        {/* Empty */}
         {!loading && !error && services.length === 0 && (
           <EmptyState message="Chưa có dịch vụ tại chi nhánh này." />
         )}
 
-        {/* Service banners */}
         {!loading && !error && services.length > 0 && (
           <>
             <SectionDivider label="Dịch vụ nổi bật" />
@@ -535,16 +514,23 @@ export default function ServicesPage() {
                 service={service}
                 index={i}
                 flip={i % 2 !== 0}
+                onBook={setBookingService} // ← TRUYỀN PROP
               />
             ))}
           </>
         )}
 
-        {/* Pagination */}
         {pagination && !loading && !error && (
-          <Pagination pagination={pagination} onPage={setPage} />
+          <PaginationBar pagination={pagination} onPage={setPage} />
         )}
       </div>
+
+      {bookingService && (
+        <BookingModal
+          service={bookingService}
+          onClose={() => setBookingService(null)}
+        />
+      )}
     </main>
   );
 }
