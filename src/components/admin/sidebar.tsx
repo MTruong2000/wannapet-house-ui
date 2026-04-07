@@ -168,7 +168,7 @@ const NAV_ITEMS = [
   },
 ];
 
-const API = process.env.NEXT_PUBLIC_API_BASE_URL + "/api/admin";
+const API = "/api/admin";
 
 function Sidebar({
   collapsed,

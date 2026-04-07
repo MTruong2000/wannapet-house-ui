@@ -37,7 +37,7 @@ interface SelectOption {
   name: string;
 }
 
-const API = process.env.NEXT_PUBLIC_API_BASE_URL + "/api/admin";
+const API = "/api/admin";
 const LIMIT = 10;
 
 /* ──────────────────────── Delete Dialog ─────────────────────── */
