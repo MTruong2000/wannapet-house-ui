@@ -5,8 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:2906";
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 interface Category {
   id: string;

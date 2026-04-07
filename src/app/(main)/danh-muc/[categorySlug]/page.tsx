@@ -5,9 +5,6 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:2906";
-
 interface Product {
   id: string;
   name: string;
@@ -26,6 +23,8 @@ interface ApiResponse {
   limit: number;
   total_pages: number;
 }
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Mới nhất" },

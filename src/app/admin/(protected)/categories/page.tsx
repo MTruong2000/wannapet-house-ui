@@ -41,7 +41,7 @@ const EMPTY_FORM: FormState = {
   parent_id: "",
   is_active: true,
 };
-const API = "http://localhost:2906/api/admin";
+const API = process.env.NEXT_PUBLIC_API_BASE_URL + "/api/admin";
 const LIMIT = 10;
 
 function toSlug(str: string) {

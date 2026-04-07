@@ -12,6 +12,7 @@ export interface Location {
 }
 
 const LOCATION_KEY = "selected_location_slug";
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export function useLocation() {
   const [locations, setLocations] = useState<Location[]>([]);
@@ -32,9 +33,7 @@ export function useLocation() {
   const fetchLocations = async (openModal = false) => {
     setLoading(true);
     try {
-      const res = await fetch(
-        `http://localhost:2906/api/locations`
-      );
+      const res = await fetch(`${BASE_URL}/api/locations`);
       const data: Location[] = await res.json();
       setLocations(data);
 

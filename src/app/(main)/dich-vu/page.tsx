@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
-import BookingModal  from "@/components/booking";
+import BookingModal from "@/components/booking";
 /* ─────────────────────────── Types ─────────────────────────── */
 interface ServiceFeature {
   id: string;
@@ -47,8 +47,7 @@ interface ApiResponse {
 }
 
 /* ─────────────────────────── Constants ─────────────────────────── */
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:2906";
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const LIMIT = 10;
 
 /* ─────────────────────────── Helpers ─────────────────────────── */

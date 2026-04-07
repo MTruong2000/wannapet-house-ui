@@ -168,6 +168,8 @@ const NAV_ITEMS = [
   },
 ];
 
+const API = process.env.NEXT_PUBLIC_API_BASE_URL + "/api/admin";
+
 function Sidebar({
   collapsed,
   onToggle,
@@ -179,7 +181,7 @@ function Sidebar({
   const router = useRouter();
 
   const handleLogout = async () => {
-    await fetch("http://localhost:2906/api/admin/logout", {
+    await fetch(`${API}/logout`, {
       method: "POST",
       credentials: "include",
     });

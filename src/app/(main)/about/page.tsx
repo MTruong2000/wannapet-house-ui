@@ -27,8 +27,7 @@ interface ContentBlockApiResponse {
   data: ContentBlock;
 }
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:2906";
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);

@@ -45,7 +45,7 @@ const EMPTY_FORM: FormState = {
   is_active: true,
 };
 
-const API = "http://localhost:2906/api/admin";
+const API = process.env.NEXT_PUBLIC_API_BASE_URL + "/api/admin";
 
 const inputClass =
   "w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all placeholder-gray-600";
