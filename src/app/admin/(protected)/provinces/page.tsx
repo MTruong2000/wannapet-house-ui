@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "@/components/admin/toast";
 
-const API = process.env.NEXT_PUBLIC_API_BASE_URL + "/api/admin";
+const API = "/api/admin";
 
 type Province = {
   id: string;
