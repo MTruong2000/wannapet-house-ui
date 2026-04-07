@@ -17,7 +17,16 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch(`${BASE_URL}/api/admin/login`, {
+      // const res = await fetch(`${BASE_URL}/api/admin/login`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   credentials: "include",
+      //   body: JSON.stringify(form),
+      // });
+
+      const res = await fetch(`/api/admin/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
