@@ -24,8 +24,15 @@ export async function POST(req: Request) {
       );
     }
 
+    if (!data?.token) {
+      return NextResponse.json(
+        { message: "Token không tồn tại từ backend." },
+        { status: 500 }
+      );
+    }
+
     const response = NextResponse.json(
-      { success: true, user: data.user },
+      { success: true, user: data.user ?? null },
       { status: 200 }
     );
 
