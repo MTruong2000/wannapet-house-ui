@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import BookingModal from "@/components/booking";
-/* ─────────────────────────── Types ─────────────────────────── */
+
 interface ServiceFeature {
   id: string;
   title: string;
@@ -46,11 +46,9 @@ interface ApiResponse {
   pagination: Pagination;
 }
 
-/* ─────────────────────────── Constants ─────────────────────────── */
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const LIMIT = 10;
 
-/* ─────────────────────────── Helpers ─────────────────────────── */
 function formatPrice(price: number) {
   return new Intl.NumberFormat("vi-VN", {
     style: "currency",
@@ -66,7 +64,6 @@ function formatDuration(minutes: number) {
   return m > 0 ? `${h}h${m}p` : `${h} giờ`;
 }
 
-/* ─────────────────────────── Check Icon ─────────────────────────── */
 function CheckIcon({ color = "#3B4E1E" }: { color?: string }) {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -120,7 +117,6 @@ function SkeletonBanner({ flip = false }: { flip?: boolean }) {
   );
 }
 
-/* ─────────────────────────── Service Banner Card ─────────────────────────── */
 function ServiceBannerCard({
   service,
   index,
@@ -189,7 +185,6 @@ function ServiceBannerCard({
       </div>
 
       <div className={`flex ${flip ? "flex-row-reverse" : "flex-row"}`}>
-        {/* Image */}
         <div
           className="relative shrink-0 overflow-hidden"
           style={{ width: "42%", aspectRatio: "1 / 1" }}
@@ -272,7 +267,6 @@ function ServiceBannerCard({
           )}
 
           <div className="flex items-center gap-3 mt-1 flex-wrap">
-            {/* ← NÚT ĐẶT LỊCH NGAY (đã thay Link bằng button) */}
             <button
               onClick={() => onBook(service)}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-extrabold text-white
@@ -318,7 +312,6 @@ function ServiceBannerCard({
   );
 }
 
-/* ─────────────────────────── EmptyState ─────────────────────────── */
 function EmptyState({ message }: { message: string }) {
   return (
     <div className="flex flex-col items-center justify-center py-28 gap-4">
@@ -401,7 +394,6 @@ function PaginationBar({
   );
 }
 
-/* ─────────────────────────── Main Page ─────────────────────────── */
 export default function ServicesPage() {
   const [services, setServices] = useState<Service[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
@@ -409,7 +401,6 @@ export default function ServicesPage() {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
 
-  // ← STATE CHO BOOKING MODAL
   const [bookingService, setBookingService] = useState<Service | null>(null);
 
   const fetchServices = useCallback(async () => {
@@ -453,7 +444,6 @@ export default function ServicesPage() {
           "radial-gradient(ellipse at 10% 0%, #D4E890 0%, transparent 45%), radial-gradient(ellipse at 90% 100%, #7A9C40 0%, transparent 45%)",
       }}
     >
-      {/* Hero */}
       <div
         className="w-full pt-10 pb-7 px-4 text-center"
         style={{
@@ -488,7 +478,6 @@ export default function ServicesPage() {
         )}
       </div>
 
-      {/* Content */}
       <div className="w-full max-w-[1200px] mx-auto px-10 pb-20 space-y-4">
         {loading && (
           <>
@@ -513,7 +502,7 @@ export default function ServicesPage() {
                 service={service}
                 index={i}
                 flip={i % 2 !== 0}
-                onBook={setBookingService} // ← TRUYỀN PROP
+                onBook={setBookingService}
               />
             ))}
           </>

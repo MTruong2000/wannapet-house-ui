@@ -285,7 +285,6 @@ export default function ContentBlockModal({
       return;
     }
 
-    // validate items
     for (let i = 0; i < form.items.length; i++) {
       if (!form.items[i].label.trim()) {
         toast.error(`Mục #${i + 1} thiếu label`);

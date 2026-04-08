@@ -53,7 +53,9 @@ export default function PetProductSection({
       },
       { threshold: 0.05, rootMargin: "0px 0px -50px 0px" }
     );
+
     if (sectionRef.current) observer.observe(sectionRef.current);
+
     return () => observer.disconnect();
   }, []);
 
@@ -70,11 +72,8 @@ export default function PetProductSection({
 
   const petImageBlock = (
     <div
-      className="flex-shrink-0 self-end"
+      className="relative w-full max-w-[240px] sm:max-w-[270px] md:max-w-[286px] mx-auto md:mx-0 flex-shrink-0"
       style={{
-        width: 286,
-        height: 367,
-        position: "relative",
         transition: visible ? "opacity 0.7s ease, transform 0.7s ease" : "none",
         opacity: visible ? 1 : 0,
         transform: visible
@@ -84,38 +83,25 @@ export default function PetProductSection({
           : "translateX(32px)",
       }}
     >
-      <div
-        className="absolute rounded-2xl"
-        style={{
-          width: 286,
-          height: 367,
-          top: 12,
-          left: 12,
-          border: "4px solid #CEE672",
-          borderRadius: 16,
-          zIndex: 0,
-        }}
-      />
-      <div
-        className="absolute top-0 left-0 overflow-hidden"
-        style={{ width: 286, height: 367, borderRadius: 16, zIndex: 1 }}
-      >
-        <Image
-          src={petImageSrc}
-          alt={petImageAlt}
-          width={286}
-          height={367}
-          style={{ objectFit: "cover", width: "100%", height: "100%" }}
-          priority
-        />
+      <div className="relative w-full aspect-[286/367]">
+        <div className="absolute inset-0 translate-x-[10px] translate-y-[10px] sm:translate-x-3 sm:translate-y-3 border-[4px] border-[#CEE672] rounded-2xl z-0" />
+        <div className="absolute inset-0 overflow-hidden rounded-2xl z-[1]">
+          <Image
+            src={petImageSrc}
+            alt={petImageAlt}
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
       </div>
     </div>
   );
 
   const productsBlock = (
-    <div className="flex flex-col min-w-0">
+    <div className="flex flex-col min-w-0 w-full md:w-auto md:min-w-[700px]">
       <div
-        className="flex items-center justify-center gap-4"
+        className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 flex-wrap text-center"
         style={{
           transition: visible
             ? "opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s"
@@ -124,62 +110,45 @@ export default function PetProductSection({
           transform: visible ? "translateY(0)" : "translateY(-16px)",
         }}
       >
-        <div
-          style={{ width: 48, height: 48, position: "relative", flexShrink: 0 }}
-        >
-          <Image
-            src={foodIconSrc}
-            alt="Food"
-            fill
-            style={{ objectFit: "contain" }}
-          />
+        <div className="relative w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 flex-shrink-0">
+          <Image src={foodIconSrc} alt="Food" fill className="object-contain" />
         </div>
-        <div
-          style={{
-            position: "relative",
-            width: 220,
-            height: 52,
-            flexShrink: 0,
-          }}
-        >
+
+        <div className="relative w-[150px] h-[36px] sm:w-[180px] sm:h-[42px] md:w-[220px] md:h-[52px] flex-shrink-0">
           <Image
             src={titleSvgSrc}
             alt={titleSvgAlt}
             fill
-            style={{ objectFit: "contain" }}
+            className="object-contain"
           />
         </div>
-        <div
-          style={{ width: 64, height: 64, position: "relative", flexShrink: 0 }}
-        >
+
+        <div className="relative w-11 h-11 sm:w-14 sm:h-14 md:w-16 md:h-16 flex-shrink-0">
           <Image
             src={petIconSrc}
             alt={petIconAlt}
             fill
-            style={{ objectFit: "contain" }}
+            className="object-contain"
           />
         </div>
       </div>
 
       {loading ? (
-        <div className="flex gap-4">
+        <div className="mt-4 flex gap-3 sm:gap-4 overflow-x-auto md:overflow-visible pb-2 justify-start md:justify-center">
           {[0, 1, 2].map((i) => (
             <div
               key={i}
-              className="flex-shrink-0 animate-pulse bg-[#F8F3E1] rounded-2xl"
-              style={{ width: 217, height: 285 }}
+              className="flex-shrink-0 animate-pulse bg-[#F8F3E1] rounded-2xl w-[150px] h-[210px] sm:w-[180px] sm:h-[240px] md:w-[217px] md:h-[285px]"
             />
           ))}
         </div>
       ) : (
-        <div className="flex gap-4 overflow-x-auto p-3">
+        <div className="mt-4 flex gap-3 sm:gap-4 overflow-x-auto md:overflow-visible pb-2 px-1 md:px-0 justify-start md:justify-center">
           {products.map((product, index) => (
             <div
               key={index}
-              className="flex-shrink-0 rounded-2xl overflow-hidden relative cursor-pointer hover:scale-[1.03]"
+              className="flex-shrink-0 rounded-2xl overflow-hidden relative cursor-pointer hover:scale-[1.03] w-[150px] h-[210px] sm:w-[180px] sm:h-[240px] md:w-[217px] md:h-[285px]"
               style={{
-                width: 217,
-                height: 285,
                 transition: visible
                   ? `opacity 0.6s ease ${
                       0.2 + index * 0.1
@@ -196,22 +165,18 @@ export default function PetProductSection({
                   <Image
                     src={product.image_url}
                     alt={product.sku}
-                    width={217}
-                    height={285}
-                    style={{
-                      objectFit: "cover",
-                      width: "100%",
-                      height: "100%",
-                    }}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 150px, (max-width: 768px) 180px, 217px"
                   />
                   <div
-                    className="absolute bottom-0 left-0 right-0 px-3 py-2"
+                    className="absolute bottom-0 left-0 right-0 px-2 sm:px-3 py-2"
                     style={{
                       background:
                         "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)",
                     }}
                   >
-                    <p className="text-white text-xs font-medium text-center leading-tight line-clamp-2">
+                    <p className="text-white text-[11px] sm:text-xs font-medium text-center leading-tight line-clamp-2">
                       {product.sku}
                     </p>
                   </div>
@@ -222,7 +187,7 @@ export default function PetProductSection({
                   style={{ background: "#F8F3E1" }}
                 >
                   <p
-                    className="text-xs text-center line-clamp-3 leading-snug"
+                    className="text-[11px] sm:text-xs text-center line-clamp-3 leading-snug"
                     style={{ color: "#9B8B6A" }}
                   >
                     {product.sku}
@@ -235,9 +200,8 @@ export default function PetProductSection({
       )}
 
       <div
-        className="flex justify-center"
+        className="flex justify-center mt-5 sm:mt-6"
         style={{
-          marginTop: "auto",
           transition: visible
             ? "opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s"
             : "none",
@@ -257,22 +221,16 @@ export default function PetProductSection({
   );
 
   return (
-    <section ref={sectionRef} className="w-full">
-      <div
-        className="relative w-full bg-[var(--primary-color)] flex flex-row justify-center items-stretch gap-6 p-16 pt-0"
-        style={{ minHeight: 410 }}
-      >
-        {petImagePosition === "left" ? (
-          <>
-            {petImageBlock}
-            {productsBlock}
-          </>
-        ) : (
-          <>
-            {productsBlock}
-            {petImageBlock}
-          </>
-        )}
+    <section ref={sectionRef} className="w-full bg-[var(--primary-color)]">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16 py-8 md:py-12">
+        <div
+          className={`relative flex justify-center items-center gap-6 md:gap-10 flex-col ${
+            petImagePosition === "right" ? "md:flex-row-reverse" : "md:flex-row"
+          }`}
+        >
+          {petImageBlock}
+          {productsBlock}
+        </div>
       </div>
     </section>
   );
@@ -282,10 +240,10 @@ function ViewMoreButton({ onClick }: { onClick?: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="text-white text-sm font-semibold rounded-full"
+      className="text-white text-sm sm:text-base font-semibold rounded-full"
       style={{
         background: "#3B4E1E",
-        padding: "10px 48px",
+        padding: "10px 32px",
         transition: "background 0.2s ease, transform 0.15s ease",
       }}
       onMouseEnter={(e) => {

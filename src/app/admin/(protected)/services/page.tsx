@@ -889,7 +889,6 @@ export default function ServicesPage() {
 
   const openEdit = async (s: Service) => {
     setEditTarget(s);
-    // Fetch detail to get features
     try {
       const res = await fetch(`${API}/services/${s.id}`, {
         credentials: "include",

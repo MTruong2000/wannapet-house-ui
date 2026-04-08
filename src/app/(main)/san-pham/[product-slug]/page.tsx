@@ -53,8 +53,6 @@ interface ProductDetail {
   breadcrumb: BreadcrumbItem[];
 }
 
-/* related_products từ get_related_products() trả về stock (number),
-   không có stock_status — tự tính ở FE */
 interface RelatedProduct {
   id: string;
   name: string;
@@ -71,7 +69,6 @@ interface ApiResponse {
   related_products: RelatedProduct[];
 }
 
-/* ─── Helpers ────────────────────────────────────────────────── */
 function formatVND(amount: number) {
   return amount.toLocaleString("vi-VN") + " ₫";
 }
@@ -99,7 +96,6 @@ function stockLabel(status: "in_stock" | "low_stock" | "out_of_stock") {
   }
 }
 
-/* ─── Page ───────────────────────────────────────────────────── */
 export default function ProductDetailPage() {
   const params = useParams();
   const productSlug = params["product-slug"] as string;
@@ -142,7 +138,6 @@ export default function ProductDetailPage() {
       .finally(() => setLoading(false));
   }, [productSlug]);
 
-  /* ── Loading skeleton ── */
   if (loading) {
     return (
       <div className="min-h-screen" style={{ background: "#f5f0e8" }}>
@@ -171,7 +166,6 @@ export default function ProductDetailPage() {
     );
   }
 
-  /* ── Not found ── */
   if (notFound || !data) {
     return (
       <div
@@ -199,7 +193,6 @@ export default function ProductDetailPage() {
   return (
     <div className="min-h-screen" style={{ background: "#f5f0e8" }}>
       <div className="mx-auto max-w-5xl px-4 py-8">
-        {/* ── Breadcrumb ── */}
         <nav className="mb-6 flex flex-wrap items-center gap-2 text-sm">
           <button onClick={() => router.back()} style={{ color: "#3B4E1E" }}>
             ← Quay lại
@@ -225,7 +218,6 @@ export default function ProductDetailPage() {
           </span>
         </nav>
 
-        {/* ── Main card ── */}
         <div
           className="mb-10 overflow-hidden rounded-3xl"
           style={{
@@ -234,7 +226,6 @@ export default function ProductDetailPage() {
           }}
         >
           <div className="flex flex-col md:flex-row">
-            {/* ── Ảnh sản phẩm ── */}
             <div
               className="relative flex-shrink-0 md:w-[420px]"
               style={{ borderRight: "1px solid #f0ebe0" }}
@@ -262,7 +253,6 @@ export default function ProductDetailPage() {
                   </div>
                 )}
 
-                {/* Badges */}
                 <div className="absolute left-3 top-3 flex flex-col gap-1">
                   {product.stock_status === "out_of_stock" && (
                     <span
@@ -292,9 +282,7 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
-            {/* ── Thông tin sản phẩm ── */}
             <div className="flex flex-1 flex-col gap-5 p-6 md:p-8">
-              {/* Category tag */}
               <Link
                 href={`/danh-muc/${product.category.slug}`}
                 className="inline-flex w-fit rounded-full px-3 py-1 text-xs font-medium transition-opacity hover:opacity-80"
@@ -310,7 +298,6 @@ export default function ProductDetailPage() {
                 {product.name}
               </h1>
 
-              {/* Giá */}
               <div className="flex items-end gap-3">
                 {product.is_contact_price ? (
                   <span
@@ -339,7 +326,6 @@ export default function ProductDetailPage() {
                 )}
               </div>
 
-              {/* Meta info */}
               <div
                 className="grid grid-cols-2 gap-x-4 gap-y-3 rounded-2xl p-4 text-sm"
                 style={{ background: "#f5f0e8" }}
@@ -354,13 +340,11 @@ export default function ProductDetailPage() {
                 <MetaRow label="Địa chỉ" value={product.location.address} />
               </div>
 
-              {/* CTA */}
               <ContactCTA
                 productName={product.name}
                 phone={product.location.phone}
               />
 
-              {/* Mô tả */}
               {product.description && (
                 <div
                   className="border-t pt-5"
@@ -383,7 +367,6 @@ export default function ProductDetailPage() {
           </div>
         </div>
 
-        {/* ── Related products ── */}
         {related_products.length > 0 && (
           <section>
             <h2 className="mb-4 text-xl font-bold" style={{ color: "#3B4E1E" }}>
@@ -401,7 +384,6 @@ export default function ProductDetailPage() {
   );
 }
 
-/* ─── Sub-components ─────────────────────────────────────────── */
 function MetaRow({
   label,
   value,
@@ -473,7 +455,6 @@ function ContactCTA({
   );
 }
 
-/* RelatedProduct dùng stock (number) → tự tính stock_status */
 function RelatedCard({ product }: { product: RelatedProduct }) {
   const stockStatus = getStockStatus(product.stock);
   const isOutOfStock = stockStatus === "out_of_stock";
@@ -508,7 +489,6 @@ function RelatedCard({ product }: { product: RelatedProduct }) {
             </div>
           )}
 
-          {/* Badge hết hàng / sắp hết trên related card */}
           {stockStatus !== "in_stock" && (
             <div className="absolute left-2 top-2">
               <span

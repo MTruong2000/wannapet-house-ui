@@ -91,7 +91,7 @@ function validatePhone(phone: string) {
 }
 
 function validateEmail(email: string) {
-  if (!email.trim()) return true; // optional
+  if (!email.trim()) return true;
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 }
 

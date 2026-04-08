@@ -10,7 +10,6 @@ export default function WelcomeToWannapet() {
 
   function handleLearnMore() {
     setLeaving(true);
-    // Đợi animation fade-out rồi mới navigate
     setTimeout(() => {
       router.push("/about");
     }, 420);
@@ -78,7 +77,6 @@ export default function WelcomeToWannapet() {
             }}
           >
             {leaving ? (
-              /* Spinner khi đang chuyển trang */
               <>
                 <svg
                   className="w-4 h-4 animate-spin"

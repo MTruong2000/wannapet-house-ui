@@ -848,7 +848,6 @@ export default function ServiceBookingsPage() {
         return;
       }
       toast.success("Cập nhật trạng thái thành công");
-      // sync detail panel
       setDetailTarget((prev) =>
         prev ? { ...prev, status: status as ServiceBooking["status"] } : null
       );
