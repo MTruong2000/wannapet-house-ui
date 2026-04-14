@@ -1,5 +1,7 @@
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+
 import DynamicCategoryPageClient from "./dynamic-category-page-client";
 
 const VALID_PAGES: Record<
@@ -41,6 +43,48 @@ interface CategoryBlock {
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string[] }>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const slugArr = resolvedParams.slug;
+  const slug = slugArr?.length === 1 ? slugArr[0] : null;
+
+  const pageInfo = slug ? VALID_PAGES[slug] : null;
+
+  if (!slug || !pageInfo) {
+    return {};
+  }
+
+  const title = pageInfo.label;
+  const description = `${pageInfo.label} tại Wannapet House. ${pageInfo.description}. Khám phá nhiều sản phẩm chất lượng dành cho thú cưng.`;
+  const canonical = `/${slug}`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${APP_URL}/${slug}`,
+      images: [
+        {
+          url: "/hoa.jpg",
+          width: 1200,
+          height: 630,
+          alt: pageInfo.label,
+        },
+      ],
+    },
+  };
+}
 
 async function getProductsByCategory(
   slug: string,
