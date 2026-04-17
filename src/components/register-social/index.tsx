@@ -11,9 +11,6 @@ export default function HomeRegisterSocial() {
             fill
             className="object-cover"
           />
-
-          <div className="absolute inset-0 bg-black/50 z-[1]" />
-
           <div className="relative z-10 flex h-full flex-col justify-center px-4 py-8 sm:px-6 md:px-10 md:py-12 gap-4 md:gap-6">
             <h2
               className="text-center text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-wide text-[var(--primary-color)]"
@@ -43,7 +40,7 @@ export default function HomeRegisterSocial() {
                 type="button"
                 className="w-full rounded-full border border-[#f5f1d8] bg-[#f5f1d8] py-1 md:py-2 text-sm font-bold uppercase tracking-wide text-[#4f561f] transition hover:opacity-90"
               >
-                Xác nhận
+                Đăng ký ngay
               </button>
             </div>
           </div>
@@ -56,9 +53,6 @@ export default function HomeRegisterSocial() {
             fill
             className="object-cover"
           />
-
-          <div className="absolute inset-0 bg-black/50 z-[1]" />
-
           <div className="relative z-10 flex h-full flex-col justify-center px-4 py-8 text-center sm:px-6 md:px-10 md:py-12 gap-4 md:gap-6">
             <h2
               className="text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-wide text-[var(--primary-color)]"

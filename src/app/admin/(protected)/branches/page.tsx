@@ -13,6 +13,7 @@ type Location = {
   slug: string;
   address: string | null;
   phone: string | null;
+  google_map_embed_url: string | null;
   province_id: string | null;
   province_name: string | null;
   is_default: boolean;
@@ -44,6 +45,7 @@ type FormState = {
   slug: string;
   address: string;
   phone: string;
+  google_map_embed_url: string;
   province_id: string;
   is_default: boolean;
   is_active: boolean;
@@ -67,6 +69,7 @@ function Modal({
     slug: initial?.slug ?? "",
     address: initial?.address ?? "",
     phone: initial?.phone ?? "",
+    google_map_embed_url: initial?.google_map_embed_url ?? "",
     province_id: initial?.province_id ?? "",
     is_default: initial?.is_default ?? false,
     is_active: initial?.is_active ?? true,
@@ -78,7 +81,7 @@ function Modal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 w-full max-w-lg shadow-2xl">
+      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
         <h3 className="text-white font-semibold text-base mb-5">
           {initial ? "Chỉnh sửa cơ sở" : "Thêm cơ sở mới"}
         </h3>
@@ -160,6 +163,41 @@ function Modal({
             />
           </div>
 
+          <div>
+            <label className="block text-sm text-gray-400 mb-1.5">
+              Link nhúng Google Map
+            </label>
+            <input
+              className="w-full bg-gray-800 border border-gray-700 text-gray-300 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all"
+              value={form.google_map_embed_url}
+              onChange={(e) => set("google_map_embed_url", e.target.value)}
+              placeholder="VD: https://www.google.com/maps?q=...&z=16&output=embed"
+            />
+            <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">
+              Dán link embed Google Map để hiển thị bản đồ ở footer/location
+              detail.
+            </p>
+          </div>
+
+          {form.google_map_embed_url.trim() && (
+            <div>
+              <label className="block text-sm text-gray-400 mb-1.5">
+                Xem trước bản đồ
+              </label>
+              <div className="rounded-2xl overflow-hidden border border-gray-700 bg-gray-800">
+                <iframe
+                  src={form.google_map_embed_url}
+                  className="w-full h-64"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Preview Google Map"
+                />
+              </div>
+            </div>
+          )}
+
           <div className="flex items-center justify-between bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
             <div>
               <p className="text-sm text-gray-300">Cơ sở mặc định</p>
@@ -210,9 +248,9 @@ function Modal({
           </button>
           <button
             onClick={() => {
-              if (form.name.trim()) onSave(form);
+              if (form.name.trim() && form.slug.trim()) onSave(form);
             }}
-            disabled={saving || !form.name.trim()}
+            disabled={saving || !form.name.trim() || !form.slug.trim()}
             className="flex-1 bg-amber-500 hover:bg-amber-400 text-gray-950 rounded-xl py-2.5 text-sm font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {saving && (
@@ -304,6 +342,7 @@ export default function BranchesPage() {
         ? `${API}/locations/${editItem.id}`
         : `${API}/locations`;
       const method = editItem ? "PUT" : "POST";
+
       const res = await fetch(url, {
         method,
         credentials: "include",
@@ -313,13 +352,16 @@ export default function BranchesPage() {
           slug: form.slug,
           address: form.address || null,
           phone: form.phone || null,
+          google_map_embed_url: form.google_map_embed_url || null,
           province_id: form.province_id || null,
           is_default: form.is_default,
           is_active: form.is_active,
         }),
       });
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
+
       toast.success(editItem ? "Cập nhật thành công" : "Thêm mới thành công");
       setModalOpen(false);
       fetchData(search, page);
@@ -333,6 +375,7 @@ export default function BranchesPage() {
   const handleDelete = async () => {
     if (!deleteId) return;
     setDeleting(true);
+
     try {
       const res = await fetch(`${API}/locations/${deleteId}`, {
         method: "DELETE",
@@ -340,8 +383,10 @@ export default function BranchesPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
+
       toast.success("Xoá thành công");
       setDeleteId(null);
+
       if (result?.data.length === 1 && page > 1) setPage((p) => p - 1);
       else fetchData(search, page);
     } catch (err: unknown) {
@@ -361,6 +406,7 @@ export default function BranchesPage() {
           <h2 className="text-white font-semibold text-sm shrink-0">
             Danh sách cơ sở / chi nhánh
           </h2>
+
           <div className="flex items-center gap-3 flex-1 justify-end">
             <div className="relative">
               <svg
@@ -386,6 +432,7 @@ export default function BranchesPage() {
                 }}
               />
             </div>
+
             <button
               onClick={() => openModal(null)}
               className="flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-gray-950 font-semibold text-xs rounded-xl px-4 py-2 transition-colors shrink-0"
@@ -418,13 +465,14 @@ export default function BranchesPage() {
                   "Tỉnh thành",
                   "Địa chỉ",
                   "SĐT",
+                  "Map",
                   "Trạng thái",
                   "Thao tác",
                 ].map((h, i) => (
                   <th
                     key={h}
                     className={`text-xs font-medium text-gray-500 uppercase tracking-wider px-6 py-3 ${
-                      i === 6 ? "text-right" : "text-left"
+                      i === 7 ? "text-right" : "text-left"
                     } ${i === 0 ? "w-10" : ""}`}
                   >
                     {h}
@@ -432,15 +480,16 @@ export default function BranchesPage() {
                 ))}
               </tr>
             </thead>
+
             <tbody className="divide-y divide-gray-800/50">
               {loading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
-                    {Array.from({ length: 7 }).map((_, j) => (
+                    {Array.from({ length: 8 }).map((_, j) => (
                       <td key={j} className="px-6 py-4">
                         <div
                           className="h-4 bg-gray-800 rounded animate-pulse"
-                          style={{ width: j === 6 ? "80px" : "100%" }}
+                          style={{ width: j === 7 ? "80px" : "100%" }}
                         />
                       </td>
                     ))}
@@ -448,7 +497,7 @@ export default function BranchesPage() {
                 ))
               ) : items.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-6 py-16 text-center">
+                  <td colSpan={8} className="px-6 py-16 text-center">
                     <div className="flex flex-col items-center gap-3 text-gray-500">
                       <svg
                         className="w-10 h-10 opacity-30"
@@ -480,6 +529,7 @@ export default function BranchesPage() {
                     <td className="px-6 py-4 text-gray-500">
                       {(page - 1) * PAGE_SIZE + idx + 1}
                     </td>
+
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <p className="text-white font-medium">{item.name}</p>
@@ -493,17 +543,32 @@ export default function BranchesPage() {
                         {item.slug}
                       </p>
                     </td>
+
                     <td className="px-6 py-4 text-gray-400 text-sm">
                       {item.province_name ?? (
                         <span className="text-gray-600">—</span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-gray-400 text-sm max-w-[200px] truncate">
+
+                    <td className="px-6 py-4 text-gray-400 text-sm max-w-[220px] truncate">
                       {item.address ?? <span className="text-gray-600">—</span>}
                     </td>
+
                     <td className="px-6 py-4 text-gray-400 text-sm whitespace-nowrap">
                       {item.phone ?? <span className="text-gray-600">—</span>}
                     </td>
+
+                    <td className="px-6 py-4 text-sm">
+                      {item.google_map_embed_url ? (
+                        <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                          <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
+                          Đã có
+                        </span>
+                      ) : (
+                        <span className="text-gray-600">—</span>
+                      )}
+                    </td>
+
                     <td className="px-6 py-4">
                       <span
                         className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${
@@ -520,6 +585,7 @@ export default function BranchesPage() {
                         {item.is_active ? "Hoạt động" : "Tạm đóng"}
                       </span>
                     </td>
+
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button
@@ -547,6 +613,7 @@ export default function BranchesPage() {
               Tổng <span className="text-white">{result?.total ?? 0}</span> bản
               ghi
             </p>
+
             {totalPages > 1 && (
               <div className="flex items-center gap-1">
                 <button
@@ -568,6 +635,7 @@ export default function BranchesPage() {
                     />
                   </svg>
                 </button>
+
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(
                   (p) => (
                     <button
@@ -583,6 +651,7 @@ export default function BranchesPage() {
                     </button>
                   )
                 )}
+
                 <button
                   onClick={() => setPage((p) => p + 1)}
                   disabled={page === totalPages}
@@ -639,15 +708,16 @@ export default function BranchesPage() {
                 </svg>
               </div>
               <div>
-                <h3 className="text-white font-semibold text-sm">
+                <h3 className="text-white font-semibold text-base">
                   Xác nhận xoá
                 </h3>
-                <p className="text-gray-400 text-xs mt-0.5">
+                <p className="text-sm text-gray-500 mt-0.5">
                   Hành động này không thể hoàn tác.
                 </p>
               </div>
             </div>
-            <div className="flex gap-3 mt-5">
+
+            <div className="flex gap-3">
               <button
                 onClick={() => setDeleteId(null)}
                 disabled={deleting}

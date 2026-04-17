@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 
 import Header from "@/components/header";
+import WannapetFooter from "@/components/footer";
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
 
@@ -30,9 +31,9 @@ export const metadata: Metadata = {
       },
     ],
     locale: "vi_VN",
-    phoneNumbers: "0813454444",
+    phoneNumbers: process.env.NEXT_PUBLIC_SDT,
     type: "website",
-    emails: "hello@wannapethouse.com",
+    emails: process.env.NEXT_PUBLIC_EMAIL,
     countryName: "Việt Nam",
   },
   alternates: {
@@ -55,6 +56,7 @@ export default function MainLayout({
     <>
       <Header />
       {children}
+      <WannapetFooter />
     </>
   );
 }

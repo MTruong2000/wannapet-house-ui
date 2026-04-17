@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import DecorativeTitle from "../common/DecorativeTitle";
 
 const services = [
@@ -6,35 +7,39 @@ const services = [
     id: 1,
     image: "/imgs/pet-grprooming.webp",
     label: "PET GROOMING",
+    href: "/dich-vu",
   },
   {
     id: 2,
     image: "/imgs/home-phu-kien-thuc-an.webp",
     label: "PHỤ KIỆN – THỨC ĂN",
+    href: "/phu-kien",
   },
   {
     id: 3,
     image: "/imgs/home-hotel.webp",
     label: "HOTEL",
+    href: "/dich-vu",
   },
 ];
 
 export default function FeaturedServices() {
   return (
     <section
-      className="relative w-full py-13 px-4 overflow-hidden"
+      className="relative w-full overflow-hidden px-4 py-13"
       style={{ backgroundColor: "var(--primary-color)" }}
     >
       <DecorativeTitle text="Dịch Vụ Nổi Bật" />
 
-      <div className="relative z-10 flex flex-col md:flex-row gap-6 justify-center items-stretch max-w-5xl mx-auto">
+      <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-stretch justify-center gap-6 md:flex-row">
         {services.map((service) => (
-          <div
+          <Link
             key={service.id}
-            className="flex flex-col items-center gap-3 flex-1 group cursor-pointer"
+            href={service.href}
+            className="group flex flex-1 cursor-pointer flex-col items-center gap-3"
           >
-            <div className="w-full overflow-hidden p-2 bg-white shadow-lg transition-transform duration-300 group-hover:-translate-y-1 group-hover:shadow-xl">
-              <div className="relative w-full aspect-[1]">
+            <div className="w-full overflow-hidden bg-white p-2 shadow-lg transition-transform duration-300 group-hover:-translate-y-1 group-hover:shadow-xl">
+              <div className="relative aspect-[1] w-full">
                 <Image
                   src={service.image}
                   alt={service.label}
@@ -46,7 +51,7 @@ export default function FeaturedServices() {
             </div>
 
             <div
-              className="w-full text-center rounded-full py-3 px-4 font-bold text-sm md:text-base tracking-widest shadow transition-all duration-300 group-hover:scale-105"
+              className="w-full rounded-full px-4 py-3 text-center text-sm font-bold tracking-widest shadow transition-all duration-300 group-hover:scale-105 md:text-base"
               style={{
                 backgroundColor: "var(--secondary-color)",
                 color: "#5a6b2a",
@@ -56,7 +61,7 @@ export default function FeaturedServices() {
             >
               {service.label}
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>

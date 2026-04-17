@@ -252,7 +252,7 @@ export default function ProductDetailPageClient({
 
               <ContactCTA
                 productName={product.name}
-                phone={product.location.phone}
+                phone={process.env.NEXT_PUBLIC_SDT || ''}
               />
 
               {product.description && (
