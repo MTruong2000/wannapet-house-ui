@@ -4,9 +4,6 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { toast } from "@/components/admin/toast";
 import Image from "next/image";
 
-/* ─────────────────────────────────────────────
-   Types
-───────────────────────────────────────────── */
 interface Service {
   id: string;
   name: string;
@@ -68,9 +65,6 @@ interface FormState {
   features: Feature[];
 }
 
-/* ─────────────────────────────────────────────
-   Constants
-───────────────────────────────────────────── */
 const EMPTY_FORM: FormState = {
   name: "",
   slug: "",
@@ -87,9 +81,7 @@ const EMPTY_FORM: FormState = {
 const API = "/api/admin";
 const LIMIT = 10;
 
-/* ─────────────────────────────────────────────
-   Helpers
-───────────────────────────────────────────── */
+
 function toSlug(str: string) {
   return str
     .toLowerCase()
@@ -116,9 +108,7 @@ function formatDuration(minutes: number | null) {
   return m ? `${h}h${m}p` : `${h} giờ`;
 }
 
-/* ─────────────────────────────────────────────
-   Sub-components
-───────────────────────────────────────────── */
+
 function ImageUpload({
   value,
   onChange,
@@ -309,7 +299,6 @@ function Toggle({
   );
 }
 
-/* ─── Features Editor ─── */
 function FeaturesEditor({
   features,
   onChange,
@@ -475,7 +464,6 @@ function FeaturesEditor({
   );
 }
 
-/* ─── Service Modal ─── */
 function ServiceModal({
   open,
   onClose,
@@ -536,7 +524,6 @@ function ServiceModal({
             onChange={(url) => setForm((f) => ({ ...f, image_url: url }))}
           />
 
-          {/* Name + Slug */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>
@@ -571,7 +558,6 @@ function ServiceModal({
             </div>
           </div>
 
-          {/* Description */}
           <div>
             <label className={labelClass}>Mô tả</label>
             <textarea
@@ -585,7 +571,6 @@ function ServiceModal({
             />
           </div>
 
-          {/* Price + Duration */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>
@@ -627,7 +612,6 @@ function ServiceModal({
             </div>
           </div>
 
-          {/* Category + Location */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>Danh mục</label>
@@ -665,13 +649,11 @@ function ServiceModal({
             </div>
           </div>
 
-          {/* Features */}
           <FeaturesEditor
             features={form.features}
             onChange={(features) => setForm((f) => ({ ...f, features }))}
           />
 
-          {/* Toggle */}
           <div className="flex items-center justify-between bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
             <div>
               <p className="text-sm text-gray-300">Hiển thị</p>
@@ -728,7 +710,6 @@ function ServiceModal({
   );
 }
 
-/* ─── Delete Dialog ─── */
 function DeleteDialog({
   target,
   onCancel,
@@ -813,9 +794,6 @@ function DeleteDialog({
   );
 }
 
-/* ─────────────────────────────────────────────
-   Main Page
-───────────────────────────────────────────── */
 export default function ServicesPage() {
   const [services, setServices] = useState<Service[]>([]);
   const [total, setTotal] = useState(0);
@@ -835,7 +813,6 @@ export default function ServicesPage() {
   const [deleteTarget, setDeleteTarget] = useState<Service | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  /* ── Fetch ── */
   const fetchServices = useCallback(async () => {
     setLoading(true);
     try {
@@ -880,7 +857,6 @@ export default function ServicesPage() {
     fetchOptions();
   }, [fetchOptions]);
 
-  /* ── Handlers ── */
   const openCreate = () => {
     setEditTarget(null);
     setForm(EMPTY_FORM);
@@ -1011,15 +987,12 @@ export default function ServicesPage() {
     }
   };
 
-  /* ── Render ── */
   return (
     <>
       <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">
-        {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800 gap-4">
           <h2 className="text-white font-semibold text-sm shrink-0">Dịch vụ</h2>
           <div className="flex items-center gap-3 flex-1 justify-end">
-            {/* Search */}
             <div className="relative">
               <svg
                 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"
@@ -1068,7 +1041,6 @@ export default function ServicesPage() {
               )}
             </div>
 
-            {/* Add button */}
             <button
               onClick={openCreate}
               className="flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-gray-950 font-semibold text-xs rounded-xl px-4 py-2 transition-colors shrink-0"
@@ -1091,7 +1063,6 @@ export default function ServicesPage() {
           </div>
         </div>
 
-        {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -1166,7 +1137,6 @@ export default function ServicesPage() {
                       {(page - 1) * LIMIT + idx + 1}
                     </td>
 
-                    {/* Name + image */}
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         {service.image_url ? (
@@ -1207,21 +1177,18 @@ export default function ServicesPage() {
                       </div>
                     </td>
 
-                    {/* Category */}
                     <td className="px-6 py-4 text-gray-400 text-sm">
                       {service.category_name ?? (
                         <span className="text-gray-600">—</span>
                       )}
                     </td>
 
-                    {/* Price */}
                     <td className="px-6 py-4">
                       <p className="text-white text-sm font-medium">
                         {formatPrice(service.price)}
                       </p>
                     </td>
 
-                    {/* Duration */}
                     <td className="px-6 py-4">
                       {service.duration ? (
                         <span className="inline-flex items-center gap-1 text-xs text-gray-300 bg-gray-800 border border-gray-700 rounded-lg px-2 py-1">
@@ -1245,7 +1212,6 @@ export default function ServicesPage() {
                       )}
                     </td>
 
-                    {/* Features count */}
                     <td className="px-6 py-4">
                       {(service.total_features ?? 0) > 0 ? (
                         <span className="text-xs text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded-lg px-2 py-1">
@@ -1256,7 +1222,6 @@ export default function ServicesPage() {
                       )}
                     </td>
 
-                    {/* Status */}
                     <td className="px-6 py-4">
                       <span
                         className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${
@@ -1274,7 +1239,6 @@ export default function ServicesPage() {
                       </span>
                     </td>
 
-                    {/* Actions */}
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button
@@ -1297,7 +1261,6 @@ export default function ServicesPage() {
             </tbody>
           </table>
 
-          {/* Pagination */}
           <div className="px-6 py-3 border-t border-gray-800 flex items-center justify-between">
             <p className="text-xs text-gray-500">
               Tổng <span className="text-white">{total}</span> dịch vụ

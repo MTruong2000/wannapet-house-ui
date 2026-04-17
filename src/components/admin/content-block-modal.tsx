@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "@/components/admin/toast";
 
-/* ─────────────────────────── Types ─────────────────────────── */
 interface ContentBlockItem {
   label: string;
   content: string;
@@ -51,7 +50,6 @@ const inputClass =
   "w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all placeholder-gray-600";
 const labelClass = "block text-sm text-gray-400 mb-1.5";
 
-/* ──────────────────── Items Editor ───────────────────── */
 function ItemsEditor({
   items,
   onChange,
@@ -144,7 +142,6 @@ function ItemsEditor({
               key={idx}
               className="bg-gray-800/60 border border-gray-700/60 rounded-xl p-3 space-y-2"
             >
-              {/* Item header */}
               <div className="flex items-center justify-between">
                 <span className="text-xs text-gray-500 font-medium">
                   Mục #{idx + 1}
@@ -215,7 +212,6 @@ function ItemsEditor({
                 </div>
               </div>
 
-              {/* Label */}
               <input
                 className="w-full bg-gray-900/80 border border-gray-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20 transition-all placeholder-gray-600"
                 placeholder="Label (vd: Địa chỉ, Hotline...)"
@@ -223,7 +219,6 @@ function ItemsEditor({
                 onChange={(e) => updateItem(idx, "label", e.target.value)}
               />
 
-              {/* Content */}
               <textarea
                 rows={2}
                 className="w-full bg-gray-900/80 border border-gray-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20 transition-all placeholder-gray-600 resize-none"
@@ -239,7 +234,6 @@ function ItemsEditor({
   );
 }
 
-/* ──────────────────── Modal ───────────────────── */
 export default function ContentBlockModal({
   open,
   onClose,
@@ -256,7 +250,6 @@ export default function ContentBlockModal({
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
 
-  /* ── Populate form when editing ── */
   useEffect(() => {
     if (editTarget) {
       setForm({
@@ -343,7 +336,6 @@ export default function ContentBlockModal({
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 backdrop-blur-sm px-4 py-6 overflow-y-auto">
       <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 w-full max-w-2xl shadow-2xl my-auto">
-        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-white font-semibold text-base">
@@ -376,7 +368,6 @@ export default function ContentBlockModal({
         </div>
 
         <div className="space-y-5">
-          {/* Block Key + Location */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>
@@ -418,7 +409,6 @@ export default function ContentBlockModal({
             </div>
           </div>
 
-          {/* Title */}
           <div>
             <label className={labelClass}>
               Tiêu đề <span className="text-red-400">*</span>
@@ -433,7 +423,6 @@ export default function ContentBlockModal({
             />
           </div>
 
-          {/* Intro */}
           <div>
             <label className={labelClass}>Intro / Mô tả ngắn</label>
             <textarea
@@ -447,7 +436,6 @@ export default function ContentBlockModal({
             />
           </div>
 
-          {/* Items */}
           <div className="border border-gray-800 rounded-xl p-4 bg-gray-800/20">
             <ItemsEditor
               items={form.items}
@@ -455,9 +443,7 @@ export default function ContentBlockModal({
             />
           </div>
 
-          {/* Toggles */}
           <div className="flex items-center gap-6 pt-1">
-            {/* is_default */}
             <label className="flex items-center gap-3 cursor-pointer group">
               <div
                 onClick={() =>
@@ -483,7 +469,6 @@ export default function ContentBlockModal({
               </div>
             </label>
 
-            {/* is_active */}
             <label className="flex items-center gap-3 cursor-pointer group">
               <div
                 onClick={() =>
@@ -511,7 +496,6 @@ export default function ContentBlockModal({
           </div>
         </div>
 
-        {/* Footer */}
         <div className="flex gap-3 mt-6 pt-6 border-t border-gray-800">
           <button
             onClick={onClose}

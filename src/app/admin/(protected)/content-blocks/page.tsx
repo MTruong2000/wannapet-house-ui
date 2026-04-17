@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback } from "react";
 import { toast } from "@/components/admin/toast";
 import ContentBlockModal from "@/components/admin/content-block-modal";
 
-/* ─────────────────────────── Types ─────────────────────────── */
 interface ContentBlockItem {
   label: string;
   content: string;
@@ -40,7 +39,6 @@ interface SelectOption {
 const API = "/api/admin";
 const LIMIT = 10;
 
-/* ──────────────────────── Delete Dialog ─────────────────────── */
 function DeleteDialog({
   target,
   onCancel,
@@ -125,7 +123,6 @@ function DeleteDialog({
   );
 }
 
-/* ─────────────────────── Detail Drawer ─────────────────────── */
 function DetailDrawer({
   block,
   onClose,
@@ -146,7 +143,6 @@ function DetailDrawer({
         onClick={onClose}
       />
       <div className="relative w-full max-w-md bg-gray-900 border-l border-gray-800 h-full overflow-y-auto shadow-2xl flex flex-col">
-        {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800 sticky top-0 bg-gray-900 z-10">
           <h3 className="text-white font-semibold text-sm">
             Chi tiết content block
@@ -172,7 +168,6 @@ function DetailDrawer({
         </div>
 
         <div className="flex-1 p-6 space-y-5">
-          {/* Badges */}
           <div className="flex items-center gap-2 flex-wrap">
             <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border bg-gray-800 border-gray-700 text-gray-300 font-mono">
               {block.block_key}
@@ -198,7 +193,6 @@ function DetailDrawer({
             </span>
           </div>
 
-          {/* Info */}
           <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-4 space-y-3">
             <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">
               Thông tin
@@ -239,7 +233,6 @@ function DetailDrawer({
             )}
           </div>
 
-          {/* Items */}
           {block.items && block.items.length > 0 && (
             <div className="space-y-2">
               <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">
@@ -263,7 +256,6 @@ function DetailDrawer({
             </div>
           )}
 
-          {/* Meta */}
           <div className="text-xs text-gray-600 space-y-1">
             <p>
               Tạo lúc:{" "}
@@ -280,7 +272,6 @@ function DetailDrawer({
           </div>
         </div>
 
-        {/* Footer */}
         <div className="border-t border-gray-800 p-4 flex gap-3">
           <button
             onClick={() => onEdit(block)}
@@ -300,7 +291,6 @@ function DetailDrawer({
   );
 }
 
-/* ─────────────────────── Main Page ─────────────────────────── */
 export default function ContentBlocksPage() {
   const [blocks, setBlocks] = useState<ContentBlock[]>([]);
   const [total, setTotal] = useState(0);
@@ -320,7 +310,6 @@ export default function ContentBlocksPage() {
   const [deleteTarget, setDeleteTarget] = useState<ContentBlock | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  /* ── Fetch blocks ── */
   const fetchBlocks = useCallback(async () => {
     setLoading(true);
     try {
@@ -346,7 +335,6 @@ export default function ContentBlocksPage() {
     }
   }, [search, filterBlockKey, filterActive, page]);
 
-  /* ── Fetch locations ── */
   const fetchLocations = useCallback(async () => {
     try {
       const res = await fetch(`${API}/locations`, { credentials: "include" });
@@ -364,7 +352,6 @@ export default function ContentBlocksPage() {
     fetchLocations();
   }, [fetchLocations]);
 
-  /* ── Handlers ── */
   const openCreate = () => {
     setEditTarget(null);
     setDetailTarget(null);
@@ -421,11 +408,9 @@ export default function ContentBlocksPage() {
 
   const hasFilters = search || filterBlockKey || filterActive;
 
-  /* ── Render ── */
   return (
     <>
       <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">
-        {/* Toolbar */}
         <div className="px-6 py-4 border-b border-gray-800 space-y-3">
           <div className="flex items-center justify-between gap-4">
             <h2 className="text-white font-semibold text-sm shrink-0">
@@ -452,9 +437,7 @@ export default function ContentBlocksPage() {
             </button>
           </div>
 
-          {/* Filters */}
           <div className="flex flex-wrap items-center gap-3">
-            {/* Search */}
             <div className="relative">
               <svg
                 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"
@@ -503,7 +486,6 @@ export default function ContentBlocksPage() {
               )}
             </div>
 
-            {/* Block key filter */}
             <input
               className="bg-gray-800 border border-gray-700 text-white rounded-xl px-3 py-2 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all w-44 placeholder-gray-600 font-mono"
               placeholder="block_key..."
@@ -514,7 +496,6 @@ export default function ContentBlocksPage() {
               }}
             />
 
-            {/* Active filter */}
             <select
               className="bg-gray-800 border border-gray-700 text-sm text-white rounded-xl px-3 py-2 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all"
               value={filterActive}
@@ -539,7 +520,6 @@ export default function ContentBlocksPage() {
           </div>
         </div>
 
-        {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -707,7 +687,6 @@ export default function ContentBlocksPage() {
             </tbody>
           </table>
 
-          {/* Pagination */}
           <div className="px-6 py-3 border-t border-gray-800 flex items-center justify-between">
             <p className="text-xs text-gray-500">
               Tổng <span className="text-white">{total}</span> content block
@@ -773,7 +752,6 @@ export default function ContentBlocksPage() {
         </div>
       </div>
 
-      {/* Detail Drawer */}
       <DetailDrawer
         block={detailTarget}
         onClose={() => setDetailTarget(null)}
@@ -784,7 +762,6 @@ export default function ContentBlocksPage() {
         }}
       />
 
-      {/* Create/Edit Modal */}
       <ContentBlockModal
         key={editTarget?.id ?? "new"}
         open={showModal}
@@ -794,7 +771,6 @@ export default function ContentBlocksPage() {
         locations={locations}
       />
 
-      {/* Delete Dialog */}
       <DeleteDialog
         target={deleteTarget}
         onCancel={() => setDeleteTarget(null)}

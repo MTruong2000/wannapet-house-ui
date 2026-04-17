@@ -3,7 +3,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { toast } from "@/components/admin/toast";
 
-/* ─────────────────────────── Types ─────────────────────────── */
 interface ServiceBooking {
   id: string;
   customer_name: string;
@@ -68,7 +67,6 @@ const EMPTY_FORM: FormState = {
 const API = "/api/admin";
 const LIMIT = 10;
 
-/* ─────────────────────── Status config ─────────────────────── */
 const STATUS_CONFIG = {
   pending: {
     label: "Chờ xác nhận",
@@ -117,7 +115,6 @@ function formatDate(date: string) {
   return new Date(date).toLocaleDateString("vi-VN");
 }
 
-/* ─────────────────────── Detail Drawer ─────────────────────── */
 function DetailDrawer({
   booking,
   onClose,
@@ -140,7 +137,6 @@ function DetailDrawer({
         onClick={onClose}
       />
       <div className="relative w-full max-w-md bg-gray-900 border-l border-gray-800 h-full overflow-y-auto shadow-2xl flex flex-col">
-        {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800 sticky top-0 bg-gray-900 z-10">
           <h3 className="text-white font-semibold text-sm">Chi tiết booking</h3>
           <button
@@ -164,7 +160,6 @@ function DetailDrawer({
         </div>
 
         <div className="flex-1 p-6 space-y-5">
-          {/* Status */}
           <div className="flex items-center justify-between">
             <StatusBadge status={booking.status} />
             <p className="text-xs text-gray-500">
@@ -172,7 +167,6 @@ function DetailDrawer({
             </p>
           </div>
 
-          {/* Customer */}
           <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-4 space-y-3">
             <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">
               Khách hàng
@@ -212,7 +206,6 @@ function DetailDrawer({
             )}
           </div>
 
-          {/* Booking Info */}
           <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-4 space-y-3">
             <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">
               Thông tin đặt lịch
@@ -234,12 +227,13 @@ function DetailDrawer({
             {booking.note && (
               <div>
                 <p className="text-xs text-gray-500 mb-1">Ghi chú</p>
-                <p className="text-gray-300 text-sm italic">&quot;{booking.note}&quot;</p>
+                <p className="text-gray-300 text-sm italic">
+                  &quot;{booking.note}&quot;
+                </p>
               </div>
             )}
           </div>
 
-          {/* Service */}
           <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-4 space-y-3">
             <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">
               Dịch vụ
@@ -259,7 +253,6 @@ function DetailDrawer({
             </div>
           </div>
 
-          {/* Location */}
           <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-4 space-y-2">
             <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">
               Chi nhánh
@@ -277,7 +270,6 @@ function DetailDrawer({
             )}
           </div>
 
-          {/* Quick status change */}
           <div>
             <p className="text-xs text-gray-500 uppercase tracking-wider font-medium mb-2">
               Cập nhật trạng thái
@@ -304,7 +296,6 @@ function DetailDrawer({
           </div>
         </div>
 
-        {/* Footer actions */}
         <div className="border-t border-gray-800 p-4 flex gap-3">
           <button
             onClick={() => onEdit(booking)}
@@ -324,7 +315,6 @@ function DetailDrawer({
   );
 }
 
-/* ──────────────────────── Booking Modal ─────────────────────── */
 function BookingModal({
   open,
   onClose,
@@ -380,7 +370,6 @@ function BookingModal({
         </div>
 
         <div className="space-y-4">
-          {/* Customer */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>
@@ -423,7 +412,6 @@ function BookingModal({
             />
           </div>
 
-          {/* Service & Location */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>
@@ -465,7 +453,6 @@ function BookingModal({
             </div>
           </div>
 
-          {/* Date & Time */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>
@@ -496,7 +483,6 @@ function BookingModal({
             </div>
           </div>
 
-          {/* Status (edit only) */}
           {editTarget && (
             <div>
               <label className={labelClass}>Trạng thái</label>
@@ -515,7 +501,6 @@ function BookingModal({
             </div>
           )}
 
-          {/* Note */}
           <div>
             <label className={labelClass}>Ghi chú</label>
             <textarea
@@ -578,7 +563,6 @@ function BookingModal({
   );
 }
 
-/* ──────────────────────── Delete Dialog ─────────────────────── */
 function DeleteDialog({
   target,
   onCancel,
@@ -663,7 +647,6 @@ function DeleteDialog({
   );
 }
 
-/* ─────────────────────── Main Page ─────────────────────────── */
 export default function ServiceBookingsPage() {
   const [bookings, setBookings] = useState<ServiceBooking[]>([]);
   const [total, setTotal] = useState(0);
@@ -686,7 +669,6 @@ export default function ServiceBookingsPage() {
   const [deleteTarget, setDeleteTarget] = useState<ServiceBooking | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  /* ── Fetch bookings ── */
   const fetchBookings = useCallback(async () => {
     setLoading(true);
     try {
@@ -712,7 +694,6 @@ export default function ServiceBookingsPage() {
     }
   }, [search, filterStatus, filterDate, page]);
 
-  /* ── Fetch options ── */
   const fetchOptions = useCallback(async () => {
     try {
       const [svcRes, locRes] = await Promise.all([
@@ -735,7 +716,6 @@ export default function ServiceBookingsPage() {
     fetchOptions();
   }, [fetchOptions]);
 
-  /* ── Handlers ── */
   const openCreate = () => {
     setEditTarget(null);
     setForm(EMPTY_FORM);
@@ -891,11 +871,9 @@ export default function ServiceBookingsPage() {
 
   const hasFilters = search || filterStatus || filterDate;
 
-  /* ── Render ── */
   return (
     <>
       <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden">
-        {/* Toolbar */}
         <div className="px-6 py-4 border-b border-gray-800 space-y-3">
           <div className="flex items-center justify-between gap-4">
             <h2 className="text-white font-semibold text-sm shrink-0">
@@ -922,9 +900,7 @@ export default function ServiceBookingsPage() {
             </button>
           </div>
 
-          {/* Filters */}
           <div className="flex flex-wrap items-center gap-3">
-            {/* Search */}
             <div className="relative">
               <svg
                 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"
@@ -973,7 +949,6 @@ export default function ServiceBookingsPage() {
               )}
             </div>
 
-            {/* Status filter */}
             <select
               className="bg-gray-800 border border-gray-700 text-sm text-white rounded-xl px-3 py-2 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all"
               value={filterStatus}
@@ -989,7 +964,6 @@ export default function ServiceBookingsPage() {
               <option value="cancel">Đã huỷ</option>
             </select>
 
-            {/* Date filter */}
             <input
               type="date"
               className="bg-gray-800 border border-gray-700 text-sm text-white rounded-xl px-3 py-2 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all"
@@ -1011,7 +985,6 @@ export default function ServiceBookingsPage() {
           </div>
         </div>
 
-        {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -1142,7 +1115,6 @@ export default function ServiceBookingsPage() {
             </tbody>
           </table>
 
-          {/* Pagination */}
           <div className="px-6 py-3 border-t border-gray-800 flex items-center justify-between">
             <p className="text-xs text-gray-500">
               Tổng <span className="text-white">{total}</span> booking
@@ -1208,7 +1180,6 @@ export default function ServiceBookingsPage() {
         </div>
       </div>
 
-      {/* Detail Drawer */}
       <DetailDrawer
         booking={detailTarget}
         onClose={() => setDetailTarget(null)}
@@ -1220,7 +1191,6 @@ export default function ServiceBookingsPage() {
         }}
       />
 
-      {/* Create/Edit Modal */}
       <BookingModal
         key={editTarget?.id ?? "new"}
         open={showModal}
@@ -1234,7 +1204,6 @@ export default function ServiceBookingsPage() {
         locations={locations}
       />
 
-      {/* Delete Dialog */}
       <DeleteDialog
         target={deleteTarget}
         onCancel={() => setDeleteTarget(null)}

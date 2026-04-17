@@ -196,7 +196,6 @@ function Sidebar({
         ${collapsed ? "w-16" : "w-60"}
       `}
     >
-      {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-gray-800 min-h-[65px]">
         <div className="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center flex-shrink-0">
           <svg
@@ -223,7 +222,6 @@ function Sidebar({
         )}
       </div>
 
-      {/* Nav */}
       <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-1">
         {NAV_ITEMS.map((item) => {
           const isActive = pathname === item.href;
@@ -252,7 +250,6 @@ function Sidebar({
         })}
       </nav>
 
-      {/* Bottom */}
       <div className="border-t border-gray-800 p-2 space-y-1">
         <button
           onClick={onToggle}

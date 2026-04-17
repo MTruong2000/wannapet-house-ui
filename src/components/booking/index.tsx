@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 
-/* ─────────────────────────── Types ─────────────────────────── */
 interface BookingService {
   id: string;
   name: string;
@@ -66,7 +65,6 @@ const TIME_SLOTS = [
   "17:30",
 ];
 
-/* ─────────────────────────── Helpers ─────────────────────────── */
 function formatPrice(price: number) {
   return new Intl.NumberFormat("vi-VN", {
     style: "currency",
@@ -95,7 +93,6 @@ function validateEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 }
 
-/* ─────────────────────────── Icons ─────────────────────────── */
 function IconX() {
   return (
     <svg
@@ -233,7 +230,6 @@ function IconPin() {
   );
 }
 
-/* ─────────────────────────── Spinner ─────────────────────────── */
 function Spinner() {
   return (
     <svg
@@ -260,7 +256,6 @@ function Spinner() {
   );
 }
 
-/* ─────────────────────────── Input Field ─────────────────────────── */
 function InputField({
   icon,
   label,
@@ -297,7 +292,6 @@ function InputField({
   );
 }
 
-/* ─────────────────────────── Shared input style ─────────────────────────── */
 const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "10px 14px",
@@ -317,7 +311,6 @@ const inputErrorStyle: React.CSSProperties = {
   background: "rgba(255,100,60,0.08)",
 };
 
-/* ─────────────────────────── BookingModal ─────────────────────────── */
 export default function BookingModal({ service, onClose }: BookingModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const [modalState, setModalState] = useState<ModalState>("form");
@@ -335,13 +328,11 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
   const [errors, setErrors] = useState<FormErrors>({});
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
-  /* mount animation */
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 10);
     return () => clearTimeout(t);
   }, []);
 
-  /* ESC close */
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape" && modalState === "form") handleClose();
@@ -351,7 +342,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalState]);
 
-  /* body scroll lock */
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -368,7 +358,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
     if (e.target === overlayRef.current && modalState === "form") handleClose();
   };
 
-  /* ── Field update ── */
   const setField = (key: keyof FormData, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
     if (errors[key as keyof FormErrors]) {
@@ -376,7 +365,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
     }
   };
 
-  /* ── Validate ── */
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
 
@@ -410,7 +398,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
     return Object.keys(newErrors).length === 0;
   };
 
-  /* ── Submit ── */
   const handleSubmit = async () => {
     if (!validate() || !service) return;
 
@@ -448,7 +435,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
 
   if (!service) return null;
 
-  /* ── Shared focus style (injected inline via onFocus/onBlur) ── */
   const getInputStyle = (field: keyof FormErrors): React.CSSProperties => ({
     ...(errors[field] ? inputErrorStyle : inputStyle),
     border:
@@ -481,7 +467,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
         transition: "background 0.3s, backdrop-filter 0.3s",
       }}
     >
-      {/* ── Modal Panel ── */}
       <div
         className="relative w-full sm:max-w-lg overflow-hidden flex flex-col"
         style={{
@@ -501,7 +486,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
             "transform 0.35s cubic-bezier(.22,1,.36,1), opacity 0.3s ease",
         }}
       >
-        {/* Decorative top line */}
         <div
           className="absolute top-0 left-0 right-0 h-[2px]"
           style={{
@@ -510,7 +494,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
           }}
         />
 
-        {/* ════════════════ HEADER ════════════════ */}
         <div
           className="flex items-center justify-between px-5 pt-5 pb-4 shrink-0"
           style={{ borderBottom: "1px solid rgba(206,230,114,0.1)" }}
@@ -549,7 +532,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
           )}
         </div>
 
-        {/* ════════════════ SERVICE INFO PILL ════════════════ */}
         <div
           className="mx-5 mt-4 mb-1 rounded-2xl p-3.5 flex items-center gap-3 shrink-0"
           style={{
@@ -599,9 +581,7 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
           </div>
         </div>
 
-        {/* ════════════════ STATES ════════════════ */}
         <div className="flex-1 overflow-y-auto overscroll-contain">
-          {/* ── LOADING ── */}
           {modalState === "loading" && (
             <div className="flex flex-col items-center justify-center py-20 gap-5">
               <div className="relative">
@@ -620,7 +600,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
             </div>
           )}
 
-          {/* ── SUCCESS ── */}
           {modalState === "success" && (
             <div className="flex flex-col items-center justify-center py-12 px-6 gap-4 text-center">
               <div
@@ -712,7 +691,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
             </div>
           )}
 
-          {/* ── ERROR ── */}
           {modalState === "error" && (
             <div className="flex flex-col items-center justify-center py-12 px-6 gap-4 text-center">
               <div
@@ -767,10 +745,8 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
             </div>
           )}
 
-          {/* ── FORM ── */}
           {modalState === "form" && (
             <div className="px-5 py-4 space-y-4 pb-6">
-              {/* Customer Name */}
               <InputField
                 icon={<IconUser />}
                 label="Họ & Tên"
@@ -790,7 +766,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
                 />
               </InputField>
 
-              {/* Phone */}
               <InputField
                 icon={<IconPhone />}
                 label="Số điện thoại"
@@ -811,7 +786,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
                 />
               </InputField>
 
-              {/* Email */}
               <InputField
                 icon={<IconMail />}
                 label="Email"
@@ -830,7 +804,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
                 />
               </InputField>
 
-              {/* Date & Time row */}
               <div className="grid grid-cols-2 gap-3">
                 <InputField
                   icon={<IconCalendar />}
@@ -886,7 +859,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
                 </InputField>
               </div>
 
-              {/* Note */}
               <InputField icon={<IconNote />} label="Ghi chú">
                 <textarea
                   placeholder="Ghi chú thêm cho bé (tuỳ chọn)..."
@@ -915,7 +887,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
                 />
               </InputField>
 
-              {/* Submit */}
               <button
                 onClick={handleSubmit}
                 className="w-full py-3.5 rounded-2xl font-extrabold text-sm tracking-wide flex items-center justify-center gap-2 transition-all duration-200 hover:opacity-90 active:scale-[0.98] mt-2"
@@ -942,7 +913,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
         </div>
       </div>
 
-      {/* ── Keyframe styles ── */}
       <style>{`
         @keyframes scaleIn {
           from { transform: scale(0.5); opacity: 0; }
@@ -964,7 +934,6 @@ export default function BookingModal({ service, onClose }: BookingModalProps) {
   );
 }
 
-/* ─────────────────────────── Row helper for success screen ─────────────────────────── */
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-start justify-between gap-3 text-xs">
