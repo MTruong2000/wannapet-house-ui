@@ -22,9 +22,7 @@ function formatPrice(price: number | null | undefined): string {
 }
 
 function getItemHref(item: SearchItem): string {
-  const loc = item.location?.slug ?? "";
-  const base = item.type === "product" ? "san-pham" : "dich-vu";
-  return loc ? `/${loc}/${base}/${item.slug}` : `/${base}/${item.slug}`;
+  return item.type === "product" ? `san-pham/${item.slug}` : `dich-vu`;
 }
 
 function getLocationSlug(): string {
@@ -112,23 +110,12 @@ export default function HeaderSearch({ mobileInputRef }: HeaderSearchProps) {
     [router]
   );
 
-  const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      const q = keyword.trim();
-      if (!q) return;
-      setShowDropdown(false);
-      router.push(`/tim-kiem?keyword=${encodeURIComponent(q)}`);
-    },
-    [keyword, router]
-  );
-
   const isDropdownVisible =
     showDropdown && (loading || keyword.trim().length >= 2);
 
   return (
     <div ref={wrapperRef} className="relative w-full">
-      <form onSubmit={handleSubmit} className="relative">
+      <form className="relative">
         <input
           ref={inputRef}
           type="search"
