@@ -143,7 +143,7 @@ function ServiceBannerCard({
   return (
     <div
       ref={ref}
-      className="relative overflow-hidden rounded-3xl shadow-xl"
+      className="group relative overflow-hidden rounded-[28px] shadow-[0_14px_40px_rgba(59,78,30,0.18)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(59,78,30,0.22)]"
       style={{
         background: bg,
         opacity: show ? 1 : 0,
@@ -152,7 +152,8 @@ function ServiceBannerCard({
           : "translateY(40px) scale(0.97)",
         transition: mounted
           ? `opacity 0.6s cubic-bezier(.22,1,.36,1) ${index * 120}ms,
-             transform 0.6s cubic-bezier(.22,1,.36,1) ${index * 120}ms`
+             transform 0.6s cubic-bezier(.22,1,.36,1) ${index * 120}ms,
+             box-shadow 0.5s ease`
           : "none",
       }}
     >
@@ -170,18 +171,19 @@ function ServiceBannerCard({
         🐾
       </div>
 
-      <div className={`flex ${flip ? "flex-row-reverse" : "flex-row"}`}>
-        <div
-          className="relative shrink-0 overflow-hidden"
-          style={{ width: "42%", aspectRatio: "1 / 1" }}
-        >
+      <div
+        className={`flex flex-col md:flex-row ${
+          flip ? "md:flex-row-reverse" : "md:flex-row"
+        }`}
+      >
+        <div className="relative aspect-[1/1] w-full shrink-0 overflow-hidden md:w-[42%] md:self-stretch">
           {service.image_url ? (
             <Image
               src={service.image_url}
               alt={service.name}
               fill
-              className="object-cover transition-transform duration-700 hover:scale-105"
-              sizes="(max-width: 640px) 42vw, 320px"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, 42vw"
             />
           ) : (
             <div
@@ -191,6 +193,14 @@ function ServiceBannerCard({
               <span className="text-7xl opacity-20">🐾</span>
             </div>
           )}
+
+          <div
+            className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+            style={{
+              background:
+                "linear-gradient(to top, rgba(0,0,0,0.16), transparent 55%)",
+            }}
+          />
 
           {service.duration && (
             <div
@@ -213,7 +223,7 @@ function ServiceBannerCard({
           </div>
         </div>
 
-        <div className="z-10 flex flex-1 flex-col justify-center gap-3 self-stretch p-5 sm:p-6">
+        <div className="z-10 flex flex-1 flex-col justify-center gap-3 p-4 sm:p-5 md:p-6">
           <div>
             <p
               className="mb-1 text-[10px] font-bold uppercase tracking-[0.15em] opacity-60"
@@ -223,7 +233,7 @@ function ServiceBannerCard({
             </p>
 
             <h2
-              className="text-lg font-extrabold leading-tight sm:text-xl"
+              className="text-lg font-extrabold leading-tight sm:text-xl md:text-[26px]"
               style={{ color: textColor, fontFamily: "'Nunito', sans-serif" }}
             >
               {service.name}
@@ -233,8 +243,10 @@ function ServiceBannerCard({
           {service.features.length > 0 && (
             <ul className="space-y-1.5">
               {service.features.slice(0, 5).map((f) => (
-                <li key={f.id} className="flex items-center gap-2">
-                  <CheckIcon color={featureCheckColor} />
+                <li key={f.id} className="flex items-start gap-2">
+                  <span className="mt-0.5 shrink-0">
+                    <CheckIcon color={featureCheckColor} />
+                  </span>
                   <span
                     className="text-xs font-semibold leading-snug sm:text-sm"
                     style={{ color: textColor, opacity: 0.85 }}
@@ -248,24 +260,24 @@ function ServiceBannerCard({
 
           {service.features.length === 0 && service.description && (
             <p
-              className="line-clamp-3 text-xs leading-relaxed opacity-70"
+              className="line-clamp-3 text-xs leading-relaxed opacity-70 sm:text-sm"
               style={{ color: textColor }}
             >
               {service.description}
             </p>
           )}
 
-          <div className="mt-1 flex flex-wrap items-center gap-3">
+          <div className="mt-2 flex flex-wrap items-end gap-3 sm:gap-4">
             <button
               onClick={() => onBook(service)}
-              className="inline-flex items-center gap-2 rounded-2xl px-5 py-2.5 text-sm font-extrabold text-white shadow-md transition-all duration-200 hover:opacity-90 active:scale-95"
+              className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-2xl px-5 py-2.5 text-sm font-extrabold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:opacity-95 active:scale-95"
               style={{ background: ctaBg }}
             >
               ĐẶT LỊCH NGAY
             </button>
 
             {service.price > 0 && (
-              <div>
+              <div className="min-w-[110px]">
                 <p
                   className="text-[9px] uppercase tracking-widest opacity-50"
                   style={{ color: textColor }}
@@ -273,7 +285,7 @@ function ServiceBannerCard({
                   Từ
                 </p>
                 <p
-                  className="text-sm font-extrabold"
+                  className="text-sm font-extrabold sm:text-base"
                   style={{ color: isLight ? "#E05A2B" : "#CEE672" }}
                 >
                   {formatPrice(service.price)}
@@ -289,8 +301,10 @@ function ServiceBannerCard({
 
 function EmptyState({ message }: { message: string }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-28">
-      <div className="text-6xl">🐾</div>
+    <div className="flex flex-col items-center justify-center gap-4 py-24 sm:py-28">
+      <div className="text-6xl transition-transform duration-300 hover:scale-105">
+        🐾
+      </div>
       <p
         className="max-w-xs text-center text-base font-semibold"
         style={{ color: "#3B4E1E" }}
@@ -303,13 +317,13 @@ function EmptyState({ message }: { message: string }) {
 
 function SectionDivider({ label }: { label: string }) {
   return (
-    <div className="flex items-center gap-4 py-2">
+    <div className="flex items-center gap-3 py-2 sm:gap-4">
       <div
         className="h-px flex-1 rounded-full"
         style={{ background: "rgba(59,78,30,0.2)" }}
       />
       <span
-        className="rounded-full px-3 py-1 text-xs font-extrabold uppercase tracking-[0.2em]"
+        className="rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.2em] sm:text-xs"
         style={{ background: "rgba(59,78,30,0.12)", color: "#3B4E1E" }}
       >
         {label}
@@ -332,11 +346,11 @@ function PaginationBar({
   if (pagination.total_pages <= 1) return null;
 
   return (
-    <div className="mt-8 flex items-center justify-center gap-2">
+    <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
       <button
         disabled={!pagination.has_prev}
         onClick={() => onPage(pagination.page - 1)}
-        className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold disabled:opacity-30"
+        className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-transform duration-200 disabled:opacity-30 active:scale-95"
         style={{ background: "rgba(255,255,255,0.6)", color: "#3B4E1E" }}
       >
         ‹
@@ -347,12 +361,12 @@ function PaginationBar({
           <button
             key={p}
             onClick={() => onPage(p)}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-all duration-200"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-all duration-200 active:scale-95"
             style={{
               background:
                 p === pagination.page ? "#3B4E1E" : "rgba(255,255,255,0.6)",
               color: p === pagination.page ? "#CEE672" : "#3B4E1E",
-              transform: p === pagination.page ? "scale(1.12)" : "scale(1)",
+              transform: p === pagination.page ? "scale(1.08)" : "scale(1)",
             }}
           >
             {p}
@@ -363,7 +377,7 @@ function PaginationBar({
       <button
         disabled={!pagination.has_next}
         onClick={() => onPage(pagination.page + 1)}
-        className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold disabled:opacity-30"
+        className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-transform duration-200 disabled:opacity-30 active:scale-95"
         style={{ background: "rgba(255,255,255,0.6)", color: "#3B4E1E" }}
       >
         ›
@@ -408,14 +422,14 @@ export default function ServicesPageClient({
       }}
     >
       <div
-        className="w-full px-4 pb-7 pt-10 text-center"
+        className="w-full px-4 pb-7 pt-10 text-center sm:pb-8 sm:pt-12"
         style={{
           background:
             "linear-gradient(to bottom, rgba(59,78,30,0.15), transparent)",
         }}
       >
         <div
-          className="mb-3 inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-widest"
+          className="mb-3 inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-widest transition-transform duration-300 hover:-translate-y-0.5"
           style={{ background: "rgba(255,255,255,0.4)", color: "#3B4E1E" }}
         >
           🐾 Wannapet
@@ -434,7 +448,7 @@ export default function ServicesPageClient({
           className="mx-auto mt-2 max-w-sm text-sm opacity-60"
           style={{ color: "#3B4E1E" }}
         >
-          Tại Wanna Pet — mỗi bé đều xứng đáng được yêu thương 💚
+          Tại Wanna Pet — mỗi bé đều xứng đáng được yêu thương
         </p>
 
         {pagination && !error && (
@@ -444,7 +458,7 @@ export default function ServicesPageClient({
         )}
       </div>
 
-      <div className="mx-auto w-full max-w-[1200px] space-y-4 px-10 pb-20">
+      <div className="mx-auto w-full max-w-[1200px] space-y-4 px-4 pb-16 sm:px-6 md:px-10 md:pb-20">
         {error && <EmptyState message={error} />}
 
         {!error && services.length === 0 && (

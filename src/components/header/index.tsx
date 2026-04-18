@@ -137,7 +137,9 @@ function SidebarMenu({
               <p className="text-[10px] font-bold tracking-widest text-white/80 uppercase">
                 Hotline hỗ trợ
               </p>
-              <p className="text-base font-bold text-white">0123 456 789</p>
+              <p className="text-base font-bold text-white">
+                {process.env.NEXT_PUBLIC_SDT || ""}
+              </p>
             </div>
           </div>
         </div>
@@ -237,6 +239,13 @@ function MobileSearchOverlay({
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const [isDesktopNavHidden, setIsDesktopNavHidden] = useState(false);
+
+  const lastScrollYRef = useRef(0);
+  const scrollDownAccumRef = useRef(0);
+  const scrollUpAccumRef = useRef(0);
+  const tickingRef = useRef(false);
+  const isDesktopNavHiddenRef = useRef(false);
 
   const {
     locations,
@@ -248,6 +257,65 @@ export default function Header() {
     selectLocation,
   } = useLocation();
 
+  useEffect(() => {
+    lastScrollYRef.current = window.scrollY;
+
+    const updateScrollState = () => {
+      const currentY = window.scrollY;
+      const lastY = lastScrollYRef.current;
+      const delta = currentY - lastY;
+
+      if (currentY <= 2) {
+        isDesktopNavHiddenRef.current = false;
+        setIsDesktopNavHidden(false);
+        scrollDownAccumRef.current = 0;
+        scrollUpAccumRef.current = 0;
+        lastScrollYRef.current = currentY;
+        tickingRef.current = false;
+        return;
+      }
+
+      lastScrollYRef.current = currentY;
+
+      if (Math.abs(delta) < 2) {
+        tickingRef.current = false;
+        return;
+      }
+
+      if (delta > 0) {
+        scrollDownAccumRef.current += delta;
+        scrollUpAccumRef.current = 0;
+
+        if (scrollDownAccumRef.current > 80 && !isDesktopNavHiddenRef.current) {
+          isDesktopNavHiddenRef.current = true;
+          setIsDesktopNavHidden(true);
+          scrollDownAccumRef.current = 0;
+        }
+      } else {
+        scrollUpAccumRef.current += Math.abs(delta);
+        scrollDownAccumRef.current = 0;
+
+        if (scrollUpAccumRef.current > 40 && isDesktopNavHiddenRef.current) {
+          isDesktopNavHiddenRef.current = false;
+          setIsDesktopNavHidden(false);
+          scrollUpAccumRef.current = 0;
+        }
+      }
+
+      tickingRef.current = false;
+    };
+
+    const onScroll = () => {
+      if (!tickingRef.current) {
+        window.requestAnimationFrame(updateScrollState);
+        tickingRef.current = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
       <SidebarMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
@@ -256,7 +324,7 @@ export default function Header() {
         onClose={() => setIsMobileSearchOpen(false)}
       />
 
-      <header className="w-full bg-[var(--secondary-color)] py-3 md:py-5 sticky top-0 z-40 shadow-sm">
+      <header className="w-full bg-[var(--secondary-color)] py-3 md:py-3 sticky top-0 z-40 shadow-sm">
         <div className="max-w-[1200px] mx-auto px-4 xl:px-0">
           <div className="flex items-center gap-3 md:gap-5">
             <HamburgerButton
@@ -275,7 +343,7 @@ export default function Header() {
                 width={120}
                 height={80}
                 priority
-                className="w-24 h-auto md:w-[156px]"
+                className="w-24 h-auto md:w-[120px]"
               />
             </Link>
 
@@ -332,14 +400,18 @@ export default function Header() {
                   className="text-base font-bold"
                   style={{ color: "var(--primary-color)" }}
                 >
-                  0123 456 789
+                  {process.env.NEXT_PUBLIC_SDT || ""}
                 </span>
               </div>
             </div>
           </div>
 
           <nav
-            className="hidden md:flex justify-center items-center gap-3 mt-4"
+            className={`hidden md:flex justify-center items-center gap-3 overflow-hidden transform-gpu transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              isDesktopNavHidden
+                ? "max-h-0 opacity-0 -translate-y-4 pointer-events-none mt-0"
+                : "max-h-[80px] opacity-100 translate-y-0 pointer-events-auto mt-4"
+            }`}
             aria-label="Danh mục"
           >
             <Link
@@ -350,15 +422,15 @@ export default function Header() {
               <Image
                 src="/icons/header-home.svg"
                 alt="Trang chủ"
-                width={44}
-                height={44}
+                width={32}
+                height={32}
               />
             </Link>
             {DESKTOP_NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="px-5 py-2 rounded-full text-white text-sm font-bold text-center hover:opacity-90 active:scale-95 transition-all duration-150"
+                className="px-5 py-1 rounded-full text-white text-sm font-bold text-center hover:opacity-90 active:scale-95 transition-all duration-150"
                 style={{ backgroundColor: "var(--primary-color)" }}
               >
                 {item.label.toUpperCase()}

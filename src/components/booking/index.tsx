@@ -285,7 +285,7 @@ function InputField({
           className="text-[11px] font-semibold flex items-center gap-1"
           style={{ color: "#ff8a6b" }}
         >
-          <span>⚠</span> {error}
+          {error}
         </p>
       )}
     </div>

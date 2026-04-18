@@ -1,4 +1,5 @@
 export interface Product {
-  sku: string;
+  slug: string;
+  name: string;
   image_url: string | null;
 }

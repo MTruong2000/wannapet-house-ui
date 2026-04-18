@@ -129,8 +129,9 @@ export default function PetProductSectionClient({
 
             <div className="mt-4 flex gap-3 sm:gap-4 overflow-x-auto md:overflow-visible pb-2 px-1 md:px-0 justify-start md:justify-center">
               {products.map((product, index) => (
-                <div
-                  key={`${product.sku}-${index}`}
+                <Link
+                  key={`${product.slug}-${index}`}
+                  href={`/san-pham/${product.slug}`}
                   className="flex-shrink-0 rounded-2xl overflow-hidden relative cursor-pointer hover:scale-[1.03] w-[150px] h-[210px] sm:w-[180px] sm:h-[240px] md:w-[217px] md:h-[285px]"
                   style={{
                     transition: visible
@@ -148,7 +149,7 @@ export default function PetProductSectionClient({
                     <>
                       <Image
                         src={product.image_url}
-                        alt={product.sku}
+                        alt={product.name}
                         fill
                         className="object-cover"
                         sizes="(max-width: 640px) 150px, (max-width: 768px) 180px, 217px"
@@ -161,7 +162,7 @@ export default function PetProductSectionClient({
                         }}
                       >
                         <p className="text-white text-[11px] sm:text-xs font-medium text-center leading-tight line-clamp-2">
-                          {product.sku}
+                          {product.name}
                         </p>
                       </div>
                     </>
@@ -174,11 +175,11 @@ export default function PetProductSectionClient({
                         className="text-[11px] sm:text-xs text-center line-clamp-3 leading-snug"
                         style={{ color: "#9B8B6A" }}
                       >
-                        {product.sku}
+                        {product.name}
                       </p>
                     </div>
                   )}
-                </div>
+                </Link>
               ))}
             </div>
 
@@ -194,14 +195,14 @@ export default function PetProductSectionClient({
             >
               {viewMoreHref ? (
                 <Link href={viewMoreHref}>
-                  <button className="text-white text-sm sm:text-base font-semibold rounded-full bg-[#3B4E1E] px-8 py-2.5">
+                  <button className="text-white text-sm sm:text-base font-semibold rounded-full bg-[#3B4E1E] px-8 py-2.5 cursor-pointer">
                     Xem thêm
                   </button>
                 </Link>
               ) : (
                 <button
                   onClick={onViewMore}
-                  className="text-white text-sm sm:text-base font-semibold rounded-full bg-[#3B4E1E] px-8 py-2.5"
+                  className="text-white text-sm sm:text-base font-semibold rounded-full bg-[#3B4E1E] px-8 py-2.5 cursor-pointer"
                 >
                   Xem thêm
                 </button>
